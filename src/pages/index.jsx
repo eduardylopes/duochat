@@ -1,8 +1,20 @@
 import styles from '../styles/pages/Home.module.scss'
 import { DefaultButton } from '../components/DefaultButton'
 import { Header } from '../components/Header'
+import { useAuth } from '../contexts/useAuth'
+import { useRouter } from 'next/router'
 
 export default function Home() {
+  const router = useRouter();
+  const { user, signInWithGithub, signInWithGoogle} = useAuth();
+
+  async function handleLogin(signInFunction) {
+
+    await signInFunction();
+
+    router.push('/chat-room');
+  }
+
   return (
     <>
       <Header/>
@@ -15,7 +27,8 @@ export default function Home() {
             <p>Entrar</p>
             <div>
 
-              <DefaultButton 
+              <DefaultButton
+                buttonFunction={() => handleLogin(signInWithGithub)}
                 buttonClass={styles.githubLoginButton}
                 backgroundColor={'#235390'}
                 borderColor={'#042c60'}
@@ -25,7 +38,8 @@ export default function Home() {
                 <span>Github</span>
               </DefaultButton>
 
-              <DefaultButton 
+              <DefaultButton
+                buttonFunction={() => handleLogin(signInWithGoogle)}
                 buttonClass={styles.githubLoginButton}
                 backgroundColor={'#235390'}
                 borderColor={'#042c60'}

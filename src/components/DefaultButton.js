@@ -1,9 +1,12 @@
 import styles from '../styles/components/DefaultButton.module.scss'
 
-export function DefaultButton({ backgroundColor, width, borderColor, ...props }) {
+export function DefaultButton({ backgroundColor, width, borderColor, buttonFunction, ...props }) {
   return (
     <>
-      <button className={styles.defaultButton}>
+      <button
+        onClick={buttonFunction}
+        className={styles.defaultButton}
+      >
         {props.children}
       </button>
       <style jsx>{`
