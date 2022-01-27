@@ -3,16 +3,17 @@ import { initializeApp } from 'firebase/app';
 import { getAuth, GithubAuthProvider, GoogleAuthProvider } from "firebase/auth";
 import { getDatabase } from "firebase/database";
 
+
 const firebaseConfig = {
-  apiKey: "AIzaSyBAvhJ3ZVDWzs0PiWekZ7zhzC_HiRybH50",
-  authDomain: "duochat-d3d60.firebaseapp.com",
-  databaseURL: "https://duochat-d3d60-default-rtdb.firebaseio.com",
-  projectId: "duochat-d3d60",
-  storageBucket: "duochat-d3d60.appspot.com",
-  messagingSenderId: "685986646829",
-  appId: "1:685986646829:web:73e8a5886951470bd761a4",
-  measurementId: "G-N3ZF0Z9N2E"
-};
+  apiKey: process.env.NEXT_PUBLIC_API_KEY,
+  authDomain: process.env.NEXT_PUBLIC_AUTH_DOMAIN,
+  databaseURL: process.env.NEXT_PUBLIC_DATABASE_URL,
+  projectId: process.env.NEXT_PUBLIC_PROJECT_ID,
+  storageBucket: process.env.NEXT_PUBLIC_STORAGE_BUCKET,
+  messagingSenderId: process.env.NEXT_PUBLIC_MESSAGING_SENDER_ID,
+  appId: process.env.NEXT_PUBLIC_APP_ID,
+  measurementId: process.env.NEXT_PUBLIC_MEASUREMENT_ID
+}
 
 const app = initializeApp(firebaseConfig);
 const googleProvider = new GoogleAuthProvider();
