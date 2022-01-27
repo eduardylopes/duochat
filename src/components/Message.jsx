@@ -13,7 +13,6 @@ export function Message(props) {
   function handleDeleteMessage() {
 
     if(isAuthor) {
-      console.log(props.messageId)
       const messageRef = ref(database, `/messages/${props.messageId}`)
       set(messageRef, null)
     }

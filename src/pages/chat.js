@@ -5,7 +5,7 @@ import { RiRadioButtonLine, RiLogoutBoxLine } from 'react-icons/ri'
 import { useEffect, useState } from 'react'
 import toast, { Toaster } from 'react-hot-toast';
 import { useAuth } from '../hooks/useAuth'
-import { set, push, ref, onValue, off } from 'firebase/database'
+import { set, push, ref, onValue, onChildChanged, onChildAdded, off } from 'firebase/database'
 import { database } from '../services/firebase'
 import { auth } from "../services/firebase";
 import { format } from 'date-fns'
@@ -14,13 +14,13 @@ function Chat() {
   const [newMessage, setNewMessage] = useState('')
   const [messages, setMessages] = useState([])
   const { user, exitAccount, onlineUsers } = useAuth();
+  const messageRef = ref(database, 'messages/')
 
   useEffect(() => {
-    const messageRef = ref(database, 'messages/')
 
     const unsubscribeMessageListerner = onValue(messageRef, message => {
       const databaseMessage = message.val() || {}
-
+      
       const parsedMessages = Object.entries(databaseMessage).map(([key, value]) => {
         return {
           messageId: key,
@@ -33,6 +33,13 @@ function Chat() {
       setMessages(parsedMessages.reverse())
     }, {
       onlyOnce: false
+    });
+
+    onChildAdded(messageRef, message => {
+      if(typeof Audio != "undefined" && message.val().author.name != user.name) {
+        const notificationAudio = new Audio('/notification.mp3')
+        notificationAudio.play();
+      }
     });
 
     return () => off(messageRef)
