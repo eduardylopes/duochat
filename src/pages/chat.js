@@ -13,6 +13,7 @@ import { format } from 'date-fns'
 function Chat() {
   const [newMessage, setNewMessage] = useState('')
   const [messages, setMessages] = useState([])
+  const [audio, setAudio] = useState(null)
   const { user, exitAccount, onlineUsers } = useAuth();
   const messageRef = ref(database, 'messages/')
 
@@ -36,9 +37,9 @@ function Chat() {
     });
 
     onChildAdded(messageRef, message => {
-      if(typeof Audio != "undefined" && message.val().author.name != user.name) {
-        const notificationAudio = new Audio('/notification.mp3')
-        notificationAudio.play();
+      if(message.val().author.name != user.name) {
+        setAudio(new Audio('/notification.mp3'))
+        audio?.play()
       }
     });
 
