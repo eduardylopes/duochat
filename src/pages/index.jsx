@@ -28,7 +28,7 @@ export default function Home() {
             <div>
 
               <DefaultButton
-                buttonFunction={() => handleLogin(signInWithGithub)}
+                onClick={() => handleLogin(signInWithGithub)}
                 buttonClass={styles.githubLoginButton}
                 backgroundColor={'#235390'}
                 borderColor={'#042c60'}
@@ -39,7 +39,7 @@ export default function Home() {
               </DefaultButton>
 
               <DefaultButton
-                buttonFunction={() => handleLogin(signInWithGoogle)}
+                onClick={() => handleLogin(signInWithGoogle)}
                 buttonClass={styles.githubLoginButton}
                 backgroundColor={'#235390'}
                 borderColor={'#042c60'}
