@@ -1,25 +1,26 @@
-import styles from '../styles/pages/Chat.module.scss'
-import { DefaultButton } from '../components/DefaultButton'
-import { Message } from '../components/Message'
-import { RiRadioButtonLine, RiLogoutBoxLine } from 'react-icons/ri'
-import { useEffect, useState } from 'react'
-import toast, { Toaster } from 'react-hot-toast';
-import { useAuth } from '../hooks/useAuth'
-import { set, push, ref, onValue, onChildChanged, onChildAdded, off } from 'firebase/database'
+import { set, push, ref, onValue, off } from 'firebase/database'
 import { database } from '../services/firebase'
 import { auth } from "../services/firebase";
+import { RiRadioButtonLine, RiLogoutBoxLine } from 'react-icons/ri'
+import toast, { Toaster } from 'react-hot-toast';
+import { useEffect, useState } from 'react'
 import { format } from 'date-fns'
+
+import { DefaultButton } from '../components/DefaultButton'
+import { Message } from '../components/Message'
+import { useAuth } from '../hooks/useAuth'
+
+import styles from '../styles/pages/Chat.module.scss'
 
 function Chat() {
   const [newMessage, setNewMessage] = useState('')
   const [messages, setMessages] = useState([])
-  const [audio, setAudio] = useState(null)
   const { user, exitAccount, onlineUsers } = useAuth();
   const messageRef = ref(database, 'messages/')
 
   useEffect(() => {
 
-    const unsubscribeMessageListerner = onValue(messageRef, message => {
+    onValue(messageRef, message => {
       const databaseMessage = message.val() || {}
       
       const parsedMessages = Object.entries(databaseMessage).map(([key, value]) => {
@@ -34,13 +35,6 @@ function Chat() {
       setMessages(parsedMessages.reverse())
     }, {
       onlyOnce: false
-    });
-
-    onChildAdded(messageRef, message => {
-      if(message.val().author.name != user.name) {
-        setAudio(new Audio('/notification.mp3'))
-        audio?.play()
-      }
     });
 
     return () => off(messageRef)
@@ -73,7 +67,6 @@ function Chat() {
           avatar: user.avatar,
         }
       }
-
       const messageRef = ref(database, '/messages')
       const messageId = await push(messageRef)
       await set(messageId, message)
@@ -89,18 +82,18 @@ function Chat() {
         position="top-center"
         reverseOrder={false}
       />
-      <header className={styles.header}>
-        <div>
-          <RiRadioButtonLine size={20}/>
-          <span>{onlineUsers} Online</span>
-        </div>
-          <button onClick={() => exitAccount()}>
-            <span>Sair</span>
-            <RiLogoutBoxLine size={28}/>
-          </button>
-      </header>
       <main className={styles.mainContent}>
         <section className={styles.section}>
+          <header className={styles.header}>
+            <div>
+              <RiRadioButtonLine size={20}/>
+              <span>{onlineUsers} Online</span>
+            </div>
+              <button onClick={() => exitAccount()}>
+                <span>Sair</span>
+                <RiLogoutBoxLine size={28}/>
+              </button>
+          </header>
           <div className={styles.messageList}>
             { messages.map(message => {
               return (
@@ -126,16 +119,16 @@ function Chat() {
               <div>
                 <DefaultButton
                   onClick={handleSendMessage}
-                  backgroundColor={'#1cb0f6'}
-                  borderColor={'#1899d6'}
+                  backgroundColor={'#06FF00'}
+                  borderColor={'#125C13'}
                   width={'110px'}
                 >
-                  <span>Enviar</span>
+                  <span className={styles.sendButtonText}>Enviar</span>
                 </DefaultButton>
                 <DefaultButton
                   onClick={() => setNewMessage('')}
-                  backgroundColor={'#FFFFFD'}
-                  borderColor={'#DD4A48'}
+                  backgroundColor={'transparent'}
+                  borderColor={'red'}
                   width={'110px'}
                 >
                   <span className={styles.canceButtonText}>Cancelar</span>

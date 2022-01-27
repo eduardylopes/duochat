@@ -1,6 +1,6 @@
 import styles from '../styles/components/DefaultButton.module.scss'
 
-export function DefaultButton({ ...props }) {
+export function DefaultButton(props) {
   return (
     <>
       <button

@@ -1,7 +1,7 @@
-import { deleteUser, signInWithPopup } from "firebase/auth";
+import { signInWithPopup, signOut } from "firebase/auth";
 import { createContext, useEffect, useState } from "react";
 import { auth, githubProvider, googleProvider } from "../services/firebase";
-import { set, push, ref, get, child } from 'firebase/database'
+import { set, ref, get, child } from 'firebase/database'
 import { database } from '../services/firebase'
 import { useRouter } from 'next/router'
 import toast from "react-hot-toast";
@@ -38,12 +38,7 @@ export function AuthContextProvider(props) {
   useEffect(() => {
     const unsubscribe = auth.onAuthStateChanged(user => {
       if (auth.currentUser) {
-
         const { displayName, photoURL, uid } = user
-
-        if (!displayName || !photoURL) {
-          throw new Error('Missing information from Account.');
-        }
   
         setUser({
           id: uid,
@@ -57,43 +52,46 @@ export function AuthContextProvider(props) {
   }, [])
   
   async function exitAccount() {
-    deleteUser(auth.currentUser).then(() => router.push('/')).catch(error => toast.error('Ocorreu um erro inesperado!'))
+    try{
+      const signOutPromisse = await signOut(auth)
+      router.push('/')
+
+    } catch (e) {
+      toast.error('Ocorreu um erro')
+    }
   }
 
-  async function signInWithGithub() {
+  async function signIn(provider) {
     if(auth.currentUser) {
       return
     }
 
-    const result = await signInWithPopup(auth, githubProvider)
-    
-    if (result.user) {
-      const { displayName, photoURL, uid } = result.user
+    try {
+      const result = await signInWithPopup(auth, provider)
 
-      setUser({
-        id: uid,
-        name: displayName,
-        avatar: photoURL
-      })
+      if (result.user) {
+        const { displayName, photoURL, uid } = result.user
+  
+        setUser({
+          id: uid,
+          name: displayName,
+          avatar: photoURL
+        })
+      }
+
+      router.push('/chat')
+
+    } catch(e) {
+      toast.error('Não foi possivel efetuar o login, tente novamente mais tarde.')
     }
   }
 
-  async function signInWithGoogle() {
-    if(auth.currentUser) {
-      return
-    }
+  function signInWithGithub() {
+    signIn(githubProvider)
+  }
 
-    const result = await signInWithPopup(auth, googleProvider)
-
-    if (result.user) {
-      const { displayName, photoURL, uid } = result.user
-
-      setUser({
-        id: uid,
-        name: displayName,
-        avatar: photoURL
-      })
-    }
+  function signInWithGoogle() {
+    signIn(googleProvider)
   }
 
   return (

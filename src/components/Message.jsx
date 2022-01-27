@@ -1,10 +1,10 @@
-import styles from '../styles/components/Message.module.scss'
 import { RiDeleteBin2Line } from 'react-icons/ri'
-import toast, { Toaster } from 'react-hot-toast';
-import { useAuth } from '../hooks/useAuth';
 import { ref, set } from 'firebase/database'
 import { database } from '../services/firebase';
 
+import { useAuth } from '../hooks/useAuth';
+
+import styles from '../styles/components/Message.module.scss'
 
 export function Message(props) {
   const { user } = useAuth();
@@ -16,7 +16,6 @@ export function Message(props) {
       const messageRef = ref(database, `/messages/${props.messageId}`)
       set(messageRef, null)
     }
-
   }
 
   return (

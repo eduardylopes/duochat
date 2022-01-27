@@ -1,22 +1,17 @@
-import styles from '../styles/pages/Home.module.scss'
+import { useAuth } from '../hooks/useAuth'
+import { Toaster } from 'react-hot-toast'
+
 import { DefaultButton } from '../components/DefaultButton'
 import { Header } from '../components/Header'
-import { useAuth } from '../hooks/useAuth'
-import { useRouter } from 'next/router'
+
+import styles from '../styles/pages/Home.module.scss'
 
 export default function Home() {
-  const router = useRouter();
-  const { user, signInWithGithub, signInWithGoogle} = useAuth();
-
-  async function handleLogin(signInFunction) {
-
-    await signInFunction();
-
-    router.push('/chat');
-  }
+  const { signInWithGithub, signInWithGoogle} = useAuth();
 
   return (
     <div className={styles.body}>
+      <Toaster />
       <Header/>
       <main className={styles.mainContent}>
         <section>
@@ -28,7 +23,7 @@ export default function Home() {
             <div>
 
               <DefaultButton
-                onClick={() => handleLogin(signInWithGithub)}
+                onClick={() => signInWithGithub()}
                 buttonClass={styles.githubLoginButton}
                 backgroundColor={'#235390'}
                 borderColor={'#042c60'}
@@ -39,7 +34,7 @@ export default function Home() {
               </DefaultButton>
 
               <DefaultButton
-                onClick={() => handleLogin(signInWithGoogle)}
+                onClick={() => signInWithGoogle()}
                 buttonClass={styles.githubLoginButton}
                 backgroundColor={'#235390'}
                 borderColor={'#042c60'}
