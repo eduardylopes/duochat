@@ -81,15 +81,8 @@
     border-radius: 10px;
 
     @media (max-width: 1024px) {
-      max-width: 600px;
-    }
-
-    @media (max-width: 768px) {
-      max-width: 500px;
-    }
-    
-    @media (max-width: 550px) {
-      width: auto;
+      width: 100vw;
+      height: calc(100vh - 70px);
     }
 
     .messageList {
@@ -97,6 +90,7 @@
       flex-direction: column-reverse;
       height: 3fr;
       overflow-y: scroll;
+      overflow-x: hidden;
       width: 100%;
     }
 
