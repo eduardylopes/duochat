@@ -8,7 +8,7 @@ import { database } from '../services/firebase';
 
 export function Message(props) {
   const { user } = useAuth();
-  const isAuthor = props.author.userId === user?.id
+  const isAuthor = props.author.name === user?.name
 
   function handleDeleteMessage() {
 

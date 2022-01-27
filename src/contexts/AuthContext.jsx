@@ -4,6 +4,7 @@ import { auth, githubProvider, googleProvider } from "../services/firebase";
 import { set, push, ref, get, child } from 'firebase/database'
 import { database } from '../services/firebase'
 import { useRouter } from 'next/router'
+import toast from "react-hot-toast";
 
 
 export const AuthContext = createContext({});
@@ -56,7 +57,7 @@ export function AuthContextProvider(props) {
   }, [])
   
   async function exitAccount() {
-    deleteUser(auth.currentUser).then(() => router.push('/'))
+    deleteUser(auth.currentUser).then(() => router.push('/')).catch(error => toast.error('Ocorreu um erro inesperado!'))
   }
 
   async function signInWithGithub() {
