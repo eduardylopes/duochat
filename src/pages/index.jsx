@@ -1,7 +1,7 @@
 import styles from '../styles/pages/Home.module.scss'
 import { DefaultButton } from '../components/DefaultButton'
 import { Header } from '../components/Header'
-import { useAuth } from '../contexts/useAuth'
+import { useAuth } from '../hooks/useAuth'
 import { useRouter } from 'next/router'
 
 export default function Home() {
@@ -16,7 +16,7 @@ export default function Home() {
   }
 
   return (
-    <>
+    <div className={styles.body}>
       <Header/>
       <main className={styles.mainContent}>
         <section>
@@ -48,11 +48,10 @@ export default function Home() {
                 <img src="/icon-google.svg"/>
                 <span>Google</span>
                 </DefaultButton>
-
             </div>
           </div>
         </section>
       </main>
-    </>
+    </div>
   )
 }

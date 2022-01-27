@@ -1,3 +1,7 @@
+.body {
+  background-color: #235390;
+}
+
 .mainContent {
   display: flex;
   justify-content: center;
@@ -6,6 +10,7 @@
   padding: 40px;
 
   height: calc(100vh - 70px);
+
   background-image: url('/star-pattern.svg');
 
   section {

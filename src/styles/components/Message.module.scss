@@ -1,0 +1,47 @@
+.container {
+  display: flex;
+  align-items: flex-start;
+  padding: 1rem;
+  gap: 1rem;
+  width: 100%;
+
+  img {
+    height: 60px;
+    width: 60px;
+    border-radius: 50%;
+  }
+
+  > div {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+
+    > div {
+      display: flex;
+      width: 100%;
+    }
+
+    span {
+      color: #1cb0f6;
+      font-weight: 800;
+      font-size: 1rem;
+    }
+
+    p {
+      color: #FFF;
+      font-weight: 500;
+      font-size: 0.9rem;
+      flex-wrap: wrap;
+    }
+
+    .messageDate {
+      color: #AFAFAF;
+      font-style: italic;
+      font-weight: 500;
+      font-size: 0.75rem;
+      margin-left: auto;
+    }
+  }
+
+
+}
