@@ -12,7 +12,7 @@ export default function Home() {
 
     await signInFunction();
 
-    router.push('/chat-room');
+    router.push('/chat');
   }
 
   return (

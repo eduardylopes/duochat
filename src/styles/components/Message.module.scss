@@ -4,6 +4,21 @@
   padding: 1rem;
   gap: 1rem;
   width: 100%;
+  position: relative;
+
+  > button {
+    position: absolute;
+
+    right: 0;
+    bottom: 0;
+    padding: 0 1rem;
+
+    background-color: transparent;
+    border: none;
+    color: #F05454;
+
+    opacity: 0.6;
+  }
 
   img {
     height: 60px;

@@ -1,20 +1,43 @@
-import { signInWithPopup, signOut } from "firebase/auth";
+import { deleteUser, signInWithPopup } from "firebase/auth";
 import { createContext, useEffect, useState } from "react";
 import { auth, githubProvider, googleProvider } from "../services/firebase";
-import toast, { Toaster } from 'react-hot-toast';
+import { set, push, ref, get, child } from 'firebase/database'
+import { database } from '../services/firebase'
 import { useRouter } from 'next/router'
 
 
 export const AuthContext = createContext({});
 
 export function AuthContextProvider(props) {
+  const [onlineUsers, setOnlineUsers] = useState(0)
   const [user, setUser] = useState();
   const router = useRouter()
 
 
   useEffect(() => {
+    const userIdRef = ref(database, `/users/${user?.id}`)
+    const databaseRef = ref(database)
+
+    if (auth.currentUser) {
+      set(userIdRef, '')
+
+    } else {
+      set(userIdRef, null)
+    }
+
+    get(child(databaseRef, '/users'))
+      .then((snapshot) => {
+        const usersOnline = Object.keys(snapshot.val()).length
+        setOnlineUsers(usersOnline)
+    })
+
+
+  }, [auth.currentUser])
+
+  useEffect(() => {
     const unsubscribe = auth.onAuthStateChanged(user => {
       if (auth.currentUser) {
+
         const { displayName, photoURL, uid } = user
 
         if (!displayName || !photoURL) {
@@ -33,8 +56,7 @@ export function AuthContextProvider(props) {
   }, [])
   
   async function exitAccount() {
-    signOut(auth).then(() => router.push('/'))
-
+    deleteUser(auth.currentUser).then(() => router.push('/'))
   }
 
   async function signInWithGithub() {
@@ -42,15 +64,10 @@ export function AuthContextProvider(props) {
       return
     }
 
-
     const result = await signInWithPopup(auth, githubProvider)
     
     if (result.user) {
       const { displayName, photoURL, uid } = result.user
-
-      if (!displayName || !photoURL) {
-        throw new Error('Missing information from Google Account.');
-      }
 
       setUser({
         id: uid,
@@ -61,8 +78,7 @@ export function AuthContextProvider(props) {
   }
 
   async function signInWithGoogle() {
-
-    if(user) {
+    if(auth.currentUser) {
       return
     }
 
@@ -70,10 +86,6 @@ export function AuthContextProvider(props) {
 
     if (result.user) {
       const { displayName, photoURL, uid } = result.user
-
-      if (!displayName || !photoURL) {
-        throw new Error('Missing information from Google Account.');
-      }
 
       setUser({
         id: uid,
@@ -84,7 +96,7 @@ export function AuthContextProvider(props) {
   }
 
   return (
-      <AuthContext.Provider value={{ user, signInWithGoogle, signInWithGithub, exitAccount }}>
+      <AuthContext.Provider value={{ user, signInWithGoogle, signInWithGithub, exitAccount, database, onlineUsers }}>
         {props.children}
       </AuthContext.Provider>
   );

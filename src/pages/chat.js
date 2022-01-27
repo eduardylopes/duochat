@@ -1,18 +1,19 @@
-import styles from '../styles/pages/ChatRoom.module.scss'
+import styles from '../styles/pages/Chat.module.scss'
 import { DefaultButton } from '../components/DefaultButton'
 import { Message } from '../components/Message'
 import { RiRadioButtonLine, RiLogoutBoxLine } from 'react-icons/ri'
-import { useContext, useEffect, useState } from 'react'
+import { useEffect, useState } from 'react'
 import toast, { Toaster } from 'react-hot-toast';
 import { useAuth } from '../hooks/useAuth'
 import { set, push, ref, onValue, off } from 'firebase/database'
 import { database } from '../services/firebase'
+import { auth } from "../services/firebase";
 import { format } from 'date-fns'
 
-function ChatRoom() {
+function Chat() {
   const [newMessage, setNewMessage] = useState('')
   const [messages, setMessages] = useState([])
-  const { user, exitAccount } = useAuth();
+  const { user, exitAccount, onlineUsers } = useAuth();
 
   useEffect(() => {
     const messageRef = ref(database, 'messages/')
@@ -50,7 +51,7 @@ function ChatRoom() {
         return;
       }
 
-      if(!user) {
+      if(!auth.currentUser) {
         toast.error("Você deve estar logado para mandar mensagens")
         return
       }
@@ -81,7 +82,7 @@ function ChatRoom() {
       <header className={styles.header}>
         <div>
           <RiRadioButtonLine size={20}/>
-          <span>12 Online</span>
+          <span>{onlineUsers} Online</span>
         </div>
           <button onClick={() => exitAccount()}>
             <span>Sair</span>
@@ -95,6 +96,7 @@ function ChatRoom() {
               return (
                 <Message
                   key={message.messageId}
+                  messageId={message.messageId}
                   author={message.author}
                   content={message.content}
                   date={message.date}
@@ -137,4 +139,4 @@ function ChatRoom() {
   )
 }
 
-export default ChatRoom
+export default Chat
