@@ -74,7 +74,9 @@ function Chat() {
   }
 
   return (
-    <div className={styles.body}>
+    <div
+      className={styles.body}
+    >
       <Toaster
         position="top-center"
         reverseOrder={false}
@@ -105,7 +107,7 @@ function Chat() {
             })}
           </div>
           <div className={styles.userInput}>
-            <img src={user?.avatar} alt="" />
+            <img className={styles.bottonProfile} src={user?.avatar} alt="" />
             <div>
               <textarea
                 onChange={(event) => setNewMessage(event.target.value)}

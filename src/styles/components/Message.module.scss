@@ -16,14 +16,26 @@
     background-color: transparent;
     border: none;
     color: #F05454;
+    cursor: pointer;
 
     opacity: 0.6;
+
+    &:hover {
+      opacity: 1;
+      transform: scale(1.01);
+    }
   }
 
   img {
     height: 60px;
     width: 60px;
     border-radius: 50%;
+
+    @media screen and (max-width: 500px) {
+      height: 40px;
+      width: 40px;
+    }
+    
   }
 
   > div {
@@ -58,6 +70,10 @@
       font-weight: 500;
       font-size: 0.75rem;
       margin-left: auto;
+
+      @media screen and (max-width: 500px) {
+        display: none;
+      }
     }
   }
 
