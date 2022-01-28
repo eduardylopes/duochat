@@ -78,10 +78,7 @@ function Chat() {
     <div
       className={styles.body}
     >
-      <Toaster
-        position="top-center"
-        reverseOrder={false}
-      />
+      <Toaster />
       <main className={styles.mainContent}>
         <section className={styles.section}>
           <header className={styles.header}>

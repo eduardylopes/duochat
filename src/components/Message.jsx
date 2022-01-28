@@ -1,6 +1,7 @@
 import { RiDeleteBin2Line } from 'react-icons/ri'
 import { ref, set } from 'firebase/database'
 import { database } from '../services/firebase';
+import { Tooltip, CloseButton } from '@chakra-ui/react'
 
 import { useAuth } from '../hooks/useAuth';
 
@@ -21,10 +22,12 @@ export function Message(props) {
   return (
     <div className={styles.container}>
 
-      { isAuthor && 
-        <button onClick={() => handleDeleteMessage()}>
-          <RiDeleteBin2Line size={24}/>
-        </button>
+      { isAuthor &&
+        <Tooltip label="Excluir" aria-label='Excluir'>
+          <button onClick={() => handleDeleteMessage()}>
+            <CloseButton size='md' />
+          </button>
+        </Tooltip>
       }
 
       <img src={props.author.avatar} alt="" />
