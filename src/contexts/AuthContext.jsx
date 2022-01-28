@@ -1,11 +1,10 @@
 import { signInWithPopup, signOut } from "firebase/auth";
 import { createContext, useEffect, useState } from "react";
 import { auth, githubProvider, googleProvider } from "../services/firebase";
-import { set, ref, get, child } from 'firebase/database'
+import { set, ref, get, child, update, onValue } from 'firebase/database'
 import { database } from '../services/firebase'
 import { useRouter } from 'next/router'
 import toast from "react-hot-toast";
-
 
 export const AuthContext = createContext({});
 
@@ -13,27 +12,6 @@ export function AuthContextProvider(props) {
   const [onlineUsers, setOnlineUsers] = useState(0)
   const [user, setUser] = useState();
   const router = useRouter()
-
-
-  useEffect(() => {
-    const userIdRef = ref(database, `/users/${user?.id}`)
-    const databaseRef = ref(database)
-
-    if (auth.currentUser) {
-      set(userIdRef, '')
-
-    } else {
-      set(userIdRef, null)
-    }
-
-    get(child(databaseRef, '/users'))
-      .then((snapshot) => {
-        const usersOnline = Object.keys(snapshot.val()).length
-        setOnlineUsers(usersOnline)
-    })
-
-
-  }, [auth.currentUser])
 
   useEffect(() => {
     const unsubscribe = auth.onAuthStateChanged(user => {
@@ -50,10 +28,27 @@ export function AuthContextProvider(props) {
 
     return () => { unsubscribe() }
   }, [])
+
+  useEffect(() => {
+    onValue(ref(database, '/online-users'), onlineUserDatabase => {
+      setOnlineUsers(onlineUserDatabase.val())
+    }, {
+        onlyOnce: false
+    })
+  }, [auth.currentUser])
   
+  async function setUsersOnlineInDatabase(props) {
+    const onlineUsersRef = ref(database, '/online-users')
+    const databaseRef = ref(database)
+    const onlineUsersInDatabase = (await get(child(databaseRef, '/online-users'))).val()
+
+    set(onlineUsersRef, onlineUsers + props)
+  }
+
   async function exitAccount() {
     try{
       const signOutPromisse = await signOut(auth)
+      setUsersOnlineInDatabase(Number(-1))
       router.push('/')
 
     } catch (e) {
@@ -63,6 +58,7 @@ export function AuthContextProvider(props) {
 
   async function signIn(provider) {
     if(auth.currentUser) {
+      router.push('/chat')
       return
     }
 
@@ -78,6 +74,8 @@ export function AuthContextProvider(props) {
           avatar: photoURL
         })
       }
+
+      setUsersOnlineInDatabase(Number(1))
 
       router.push('/chat')
 
@@ -95,7 +93,16 @@ export function AuthContextProvider(props) {
   }
 
   return (
-      <AuthContext.Provider value={{ user, signInWithGoogle, signInWithGithub, exitAccount, database, onlineUsers }}>
+      <AuthContext.Provider 
+        value={{ 
+          user, 
+          signInWithGoogle, 
+          signInWithGithub, 
+          exitAccount, 
+          database, 
+          onlineUsers
+        }}
+      >
         {props.children}
       </AuthContext.Provider>
   );

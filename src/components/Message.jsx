@@ -24,9 +24,10 @@ export function Message(props) {
 
       { isAuthor &&
         <Tooltip label="Excluir" aria-label='Excluir'>
-          <button onClick={() => handleDeleteMessage()}>
-            <CloseButton size='md' />
-          </button>
+            <CloseButton 
+              size='md'
+              onClick={() => handleDeleteMessage()}
+            />
         </Tooltip>
       }
 

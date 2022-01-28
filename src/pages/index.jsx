@@ -6,7 +6,9 @@ import { Button, Stack, Image, Text, Heading, SimpleGrid } from '@chakra-ui/reac
 import { Toaster } from 'react-hot-toast';
 
 export default function Home() {
-  const { signInWithGithub, signInWithGoogle} = useAuth();
+  const { signInWithGithub, signInWithGoogle, onlineUsers} = useAuth();
+
+  console.log(onlineUsers)
 
   return (
     <Stack

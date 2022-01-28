@@ -5,6 +5,7 @@ import { RiRadioButtonLine, RiLogoutBoxLine } from 'react-icons/ri'
 import toast, { Toaster } from 'react-hot-toast';
 import { useEffect, useState } from 'react'
 import { format } from 'date-fns'
+import { useBeforeunload } from 'react-beforeunload';
 
 import { DefaultButton } from '../components/DefaultButton'
 import { Message } from '../components/Message'
@@ -15,11 +16,12 @@ import styles from '../styles/pages/Chat.module.scss'
 function Chat() {
   const [newMessage, setNewMessage] = useState('')
   const [messages, setMessages] = useState([])
-  const { user, exitAccount, onlineUsers } = useAuth();
+  const { user, exitAccount, onlineUsers, setOnlineUsers } = useAuth();
   const messageRef = ref(database, 'messages/')
 
-  useEffect(() => {
+  useBeforeunload(event => exitAccount())
 
+  useEffect(() => {
     onValue(messageRef, message => {
       const databaseMessage = message.val() || {}
       
