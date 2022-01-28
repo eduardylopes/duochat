@@ -5,6 +5,7 @@ import { RiRadioButtonLine, RiLogoutBoxLine } from 'react-icons/ri'
 import toast, { Toaster } from 'react-hot-toast';
 import { useEffect, useState } from 'react'
 import { format } from 'date-fns'
+import pt from 'date-fns/locale/pt-BR'
 import { useBeforeunload } from 'react-beforeunload';
 
 import { DefaultButton } from '../components/DefaultButton'
@@ -62,13 +63,14 @@ function Chat() {
 
       const message = {
         content: newMessage,
-        date: format(new Date, 'dd/MM/yyyy HH:mm:s'),
+        date: format(new Date, "dd 'de' MMM, 'às' HH:mm", {locale: pt}),
         author: {
           userId: user.id,
           name: user.name,
           avatar: user.avatar,
         }
       }
+
       const messageRef = ref(database, '/messages')
       const messageId = await push(messageRef)
       await set(messageId, message)
@@ -93,7 +95,7 @@ function Chat() {
                 <RiLogoutBoxLine size={28}/>
               </button>
           </header>
-          <div className={styles.messageList}>
+            <div className={styles.messageList}>
             { messages.map(message => {
               return (
                 <Message

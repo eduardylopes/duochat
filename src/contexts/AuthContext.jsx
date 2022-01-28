@@ -43,13 +43,17 @@ export function AuthContextProvider(props) {
     const onlineUsersInDatabase = (await get(child(databaseRef, '/online-users'))).val()
 
     set(onlineUsersRef, onlineUsers + props)
+
   }
 
   async function exitAccount() {
-    try{
-      const signOutPromisse = await signOut(auth)
-      setUsersOnlineInDatabase(Number(-1))
-      router.push('/')
+    try {
+
+      if (auth.currentUser) {
+        const signOutPromisse = await signOut(auth)
+        setUsersOnlineInDatabase(Number(-1))
+        router.push('/')
+      }
 
     } catch (e) {
       toast.error('Ocorreu um erro')

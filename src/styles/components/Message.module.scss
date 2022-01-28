@@ -1,10 +1,12 @@
 .container {
   display: flex;
-  align-items: flex-start;
-  padding: 1rem;
+  justify-content: flex-start;
+  padding: 0.5rem 0.5rem;
   gap: 1rem;
-  width: 100%;
+  width: max-content;
   position: relative;
+  background-color: #235390;
+  border-radius: 15px;
 
   > button {
     position: absolute;
@@ -31,19 +33,20 @@
     display: flex;
     flex-direction: column;
     gap: 0.5rem;
-    width: 100%;
+    width: auto;
 
     > div {
       display: flex;
       align-items: center;
       justify-content: space-between;
-      width: 100%;
+      width: auto;
     }
 
     span {
       color: #1cb0f6;
       font-weight: 800;
       font-size: 1rem;
+      margin-right: 1rem;
     }
 
     p {
@@ -58,7 +61,7 @@
       font-style: italic;
       font-weight: 500;
       font-size: 0.75rem;
-      margin-left: auto;
+      margin-left: 5rem;
 
       @media screen and (max-width: 500px) {
         display: none;

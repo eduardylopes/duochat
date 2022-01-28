@@ -1,14 +1,13 @@
 import { useAuth } from '../hooks/useAuth'
 import { FcGoogle } from 'react-icons/fc'
 import { BsGithub } from 'react-icons/bs'
+import { RiRadioButtonLine } from 'react-icons/ri'
 
-import { Button, Stack, Image, Text, Heading, SimpleGrid } from '@chakra-ui/react'
+import { Button, Box, Image, Text, Heading, SimpleGrid, Stack } from '@chakra-ui/react'
 import { Toaster } from 'react-hot-toast';
 
 export default function Home() {
   const { signInWithGithub, signInWithGoogle, onlineUsers} = useAuth();
-
-  console.log(onlineUsers)
 
   return (
     <Stack
@@ -55,11 +54,23 @@ export default function Home() {
           >
             O jeito grátis, divertido e eficaz de aprender um idioma!
           </Heading>
-          <Text
-            color='white'
-            fontSize='2xl'
-            fontWeight='extrabold'
-          >Entrar</Text>
+          <Box
+            display='flex'
+            flexDirection='row'
+            justifyContent='center'
+            alignItems='center'
+            color='green'
+          >
+            <RiRadioButtonLine size={20}/>
+            <Text
+              textAlign='center'
+              fontSize='1rem'
+              fontWeight='800'
+              ml='0.3rem'
+            >
+              {onlineUsers} Online
+            </Text>
+          </Box>
           <SimpleGrid
             display='flex'
             flexDirection='row'
