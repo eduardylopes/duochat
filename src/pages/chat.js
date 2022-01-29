@@ -1,13 +1,14 @@
 import { set, push, ref, onValue, off } from 'firebase/database'
 import { database, auth } from '../services/firebase'
-import { RiRadioButtonLine, RiLogoutBoxLine } from 'react-icons/ri'
+import { RiRadioButtonLine } from 'react-icons/ri'
 import toast, { Toaster } from 'react-hot-toast';
 import { useEffect, useState } from 'react'
 import { format } from 'date-fns'
 import pt from 'date-fns/locale/pt-BR'
 import { useBeforeunload } from 'react-beforeunload';
-import { Button, Badge, Tag, TagLeftIcon, TagLabel, Avatar, Stack } from '@chakra-ui/react'
-import { ChatIcon, DeleteIcon, ArrowLeftIcon, ViewIcon, SlideFade } from '@chakra-ui/icons'
+import { Button, Tag, TagLabel, Avatar, Stack } from '@chakra-ui/react'
+import { ChatIcon, DeleteIcon, ArrowLeftIcon } from '@chakra-ui/icons'
+import { GifPopup } from '../components/GifPopup'
 
 import { Message } from '../components/Message'
 import { useAuth } from '../hooks/useAuth'
@@ -15,12 +16,11 @@ import { useAuth } from '../hooks/useAuth'
 import styles from '../styles/pages/Chat.module.scss'
 
 function Chat() {
-
   const [newMessage, setNewMessage] = useState('')
   const [messages, setMessages] = useState([])
-  const { user, exitAccount, onlineUsers, setOnlineUsers } = useAuth();
+  const { user, exitAccount, onlineUsers } = useAuth();
 
-  useBeforeunload(event => exitAccount())
+  // useBeforeunload(event => exitAccount())
 
   useEffect(() => {
     const messageRef = ref(database, 'messages/')
@@ -48,12 +48,12 @@ function Chat() {
   function sendMessageWithEnter(event) {
     if(event.key == 'Enter') {
       event.preventDefault();
-      handleSendMessage();
+      handleSendMessage(event.target.value);
     }
   }
 
-  async function handleSendMessage() {
-      if (newMessage.trim() == '') {
+  async function handleSendMessage(msg) {
+      if (msg.trim() == '') {
         return;
       }
 
@@ -63,7 +63,7 @@ function Chat() {
       }
 
       const message = {
-        content: newMessage,
+        content: msg,
         date: format(new Date, "dd 'de' MMM, 'às' HH:mm", {locale: pt}),
         author: {
           userId: user.id,
@@ -134,10 +134,15 @@ function Chat() {
                   placeholder='Dexar um novo comentário'
                   value={newMessage}
                 />
+                <GifPopup 
+                  onStickerClick={(gifPicure) => {
+                    handleSendMessage(`:sticker:${gifPicure}`);
+                  }}
+                />
               </ Stack>
               <div>
                 <Button 
-                  onClick={handleSendMessage}
+                  onClick={() => handleSendMessage()}
                   leftIcon={<ChatIcon />} 
                   colorScheme='green' 
                   variant='solid'

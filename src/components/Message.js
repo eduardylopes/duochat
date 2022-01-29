@@ -1,8 +1,8 @@
 import { RiDeleteBin2Line } from 'react-icons/ri'
 import { ref, set } from 'firebase/database'
 import { database } from '../services/firebase';
-import { Tooltip, CloseButton } from '@chakra-ui/react'
-import { Avatar, AvatarBadge, AvatarGroup } from '@chakra-ui/react'
+import { Tooltip, CloseButton, Text } from '@chakra-ui/react'
+import { Avatar, AvatarBadge, AvatarGroup, Image } from '@chakra-ui/react'
 
 import { useAuth } from '../hooks/useAuth';
 import styles from '../styles/components/Message.module.scss'
@@ -36,7 +36,16 @@ export function Message(props) {
           <span>{props.author.name}</span> 
           <span className={styles.messageDate}>{props.date}</span>
         </div>
-        <p>{props.content}</p>
+        { props.content.startsWith(':sticker:') ? 
+          (
+            <Image 
+              borderRadius='1rem'
+              src={props.content.replace(':sticker:', '')}
+            />
+          ) : (
+            <Text>{props.content}</Text>
+          )
+        }
       </div>
     </li>
   )

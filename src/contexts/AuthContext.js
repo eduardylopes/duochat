@@ -1,7 +1,7 @@
 import { signInWithPopup, signOut } from "firebase/auth";
 import { createContext, useEffect, useState } from "react";
 import { auth, githubProvider, googleProvider } from "../services/firebase";
-import { set, ref, get, child, update, onValue } from 'firebase/database'
+import { set, ref, get, child, update, onValue, off } from 'firebase/database'
 import { useToast } from '@chakra-ui/react'
 import { database } from '../services/firebase'
 import { useRouter } from 'next/router'
@@ -32,11 +32,14 @@ export function AuthContextProvider(props) {
   }, [])
 
   useEffect(() => {
-    onValue(ref(database, '/online-users'), onlineUserDatabase => {
+    const onlineUsersRef = ref(database, '/online-users')
+    const test = onValue(onlineUsersRef, onlineUserDatabase => {
       setOnlineUsers(onlineUserDatabase.val())
     }, {
         onlyOnce: false
     })
+
+    return () => off(onlineUsersRef)
   }, [auth.currentUser])
   
   async function setUsersOnlineInDatabase(props) {
