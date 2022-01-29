@@ -9,7 +9,7 @@ import { useBeforeunload } from 'react-beforeunload';
 import { Button, Badge, Tag, TagLeftIcon, TagLabel, Avatar, Stack } from '@chakra-ui/react'
 import { ChatIcon, DeleteIcon, ArrowLeftIcon, ViewIcon, SlideFade } from '@chakra-ui/icons'
 
-import { Message } from '../components/message'
+import { Message } from '../components/Message'
 import { useAuth } from '../hooks/useAuth'
 
 import styles from '../styles/pages/Chat.module.scss'
