@@ -7,8 +7,9 @@ import { useEffect, useState } from 'react'
 import { format } from 'date-fns'
 import pt from 'date-fns/locale/pt-BR'
 import { useBeforeunload } from 'react-beforeunload';
-import { Button, Badge, Tag, TagLeftIcon, TagLabel, Avatar } from '@chakra-ui/react'
+import { Button, Badge, Tag, TagLeftIcon, TagLabel, Avatar, Stack } from '@chakra-ui/react'
 import { ChatIcon, DeleteIcon, ArrowLeftIcon, ViewIcon, SlideFade } from '@chakra-ui/icons'
+import { GifPopup } from '../components/gifButton'
 
 import { DefaultButton } from '../components/DefaultButton'
 import { Message } from '../components/Message'
@@ -127,12 +128,20 @@ function Chat() {
           <div className={styles.userInput}>
             <Avatar name={user?.name} src={user?.avatar} size='lg'/>
             <div>
-              <textarea
-                onChange={(event) => setNewMessage(event.target.value)}
-                onKeyDown={(event) => sendMessageWithEnter(event)}
-                placeholder='Dexar um novo comentário'
-                value={newMessage}
-              />
+              <Stack
+                display='flex'
+                flexDirection='row'
+                alignItems='center'
+                w='100%'
+              >
+                <textarea
+                  onChange={(event) => setNewMessage(event.target.value)}
+                  onKeyDown={(event) => sendMessageWithEnter(event)}
+                  placeholder='Dexar um novo comentário'
+                  value={newMessage}
+                />
+                <GifPopup />
+              </ Stack>
               <div>
                 <Button 
                   onClick={handleSendMessage}

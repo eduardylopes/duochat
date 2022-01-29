@@ -52,7 +52,7 @@
           line-height: 1.2rem;
           text-align: center;
           font-size: 1.2rem;
-          font-weight: 500;
+          font-weight: 400;
         }
       }
     }
@@ -89,11 +89,12 @@
   }
 
   textarea {
+    flex: 1;
     background-color: #042c60;
     border: none;
     color: #FFF;
     font-size: 1rem;
-    font-weight: 500;
+    font-weight: 400;
     border-radius: 5px;
     resize: vertical;
     text-align: left;
@@ -108,7 +109,7 @@
       opacity: 0.6;
       font-size: 1rem;
       color: #FFF;
-      font-weight: 500;
+      font-weight: 400;
     }
   }
 
