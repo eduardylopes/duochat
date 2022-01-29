@@ -9,8 +9,7 @@ import { useBeforeunload } from 'react-beforeunload';
 import { Button, Badge, Tag, TagLeftIcon, TagLabel, Avatar, Stack } from '@chakra-ui/react'
 import { ChatIcon, DeleteIcon, ArrowLeftIcon, ViewIcon, SlideFade } from '@chakra-ui/icons'
 
-import { DefaultButton } from '../components/DefaultButton'
-import { Message } from '../components/Message'
+import { Message } from '../components/message'
 import { useAuth } from '../hooks/useAuth'
 
 import styles from '../styles/pages/Chat.module.scss'
@@ -109,11 +108,8 @@ function Chat() {
           </header>
           <ul className={styles.messageList}>
             { messages.map(message => {
-
-              const owner = message.author.userId == user?.id ? true : false
               return (
                 <Message
-                  owner={owner}
                   key={message.messageId}
                   messageId={message.messageId}
                   author={message.author}

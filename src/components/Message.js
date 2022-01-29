@@ -9,7 +9,7 @@ import styles from '../styles/components/Message.module.scss'
 
 export function Message(props) {
   const { user } = useAuth();
-  const isAuthor = props.author.name === user?.name
+  const isAuthor = props.author.userId === user?.id
 
   function handleDeleteMessage() {
 
@@ -20,7 +20,7 @@ export function Message(props) {
   }
 
   return (
-    <li className={`${styles.container} ${props.owner && styles.ownerContainer}`}>
+    <li className={`${styles.container} ${isAuthor && styles.ownerContainer}`}>
 
       { isAuthor &&
         <Tooltip hasArrow label="Excluir" aria-label='Excluir'>
