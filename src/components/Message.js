@@ -5,7 +5,6 @@ import { Tooltip, CloseButton } from '@chakra-ui/react'
 import { Avatar, AvatarBadge, AvatarGroup } from '@chakra-ui/react'
 
 import { useAuth } from '../hooks/useAuth';
-
 import styles from '../styles/components/Message.module.scss'
 
 export function Message(props) {

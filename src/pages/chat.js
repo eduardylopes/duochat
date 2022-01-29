@@ -1,6 +1,5 @@
 import { set, push, ref, onValue, off } from 'firebase/database'
-import { database } from '../services/firebase'
-import { auth } from "../services/firebase";
+import { database, auth } from '../services/firebase'
 import { RiRadioButtonLine, RiLogoutBoxLine } from 'react-icons/ri'
 import toast, { Toaster } from 'react-hot-toast';
 import { useEffect, useState } from 'react'
@@ -9,7 +8,6 @@ import pt from 'date-fns/locale/pt-BR'
 import { useBeforeunload } from 'react-beforeunload';
 import { Button, Badge, Tag, TagLeftIcon, TagLabel, Avatar, Stack } from '@chakra-ui/react'
 import { ChatIcon, DeleteIcon, ArrowLeftIcon, ViewIcon, SlideFade } from '@chakra-ui/icons'
-import { GifPopup } from '../components/gifButton'
 
 import { DefaultButton } from '../components/DefaultButton'
 import { Message } from '../components/Message'
@@ -22,11 +20,11 @@ function Chat() {
   const [newMessage, setNewMessage] = useState('')
   const [messages, setMessages] = useState([])
   const { user, exitAccount, onlineUsers, setOnlineUsers } = useAuth();
-  const messageRef = ref(database, 'messages/')
 
   useBeforeunload(event => exitAccount())
 
   useEffect(() => {
+    const messageRef = ref(database, 'messages/')
     onValue(messageRef, message => {
       const databaseMessage = message.val() || {}
       
@@ -140,7 +138,6 @@ function Chat() {
                   placeholder='Dexar um novo comentário'
                   value={newMessage}
                 />
-                {/* <GifPopup /> */}
               </ Stack>
               <div>
                 <Button 
