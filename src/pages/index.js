@@ -23,17 +23,12 @@ export default function Home() {
       <Toaster />
       <Stack
         display='flex'
-        flexDirection='row'
+        flexDirection={['column', 'column', 'row', 'row']}
         alignItems='center'
         justifyContent='center'
         mx='auto'
         maxWidth='1024px'
         h='auto'
-        sx={{
-          '@media (max-width: 768px)': {
-            flexDirection: 'column',
-          },
-        }}
       >
         <Image
           boxSize='300px'

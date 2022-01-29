@@ -3,19 +3,19 @@ import {
   PopoverTrigger,
   PopoverContent,
   PopoverHeader,
-} from '@chakra-ui/react'
-
-import {
   ListItem,
   UnorderedList,
   Image,
+  Input, 
+  InputLeftElement, 
+  InputGroup, 
+  Button
 } from '@chakra-ui/react'
 
-import { Input, InputLeftElement, InputGroup, Button } from '@chakra-ui/react'
 import { SearchIcon } from '@chakra-ui/icons'
 import { BiSticker } from 'react-icons/bi'
-import { getGif } from '../services/giphy'
 import { useState } from 'react'
+import { getGif } from '../services/giphy'
 
 export function GifPopup(props){
 
@@ -42,10 +42,10 @@ export function GifPopup(props){
     >
       <PopoverTrigger>
         <Button
-        onClick={() => {
-          open()
-          handleGifList('trending')
-        }}
+          onClick={() => {
+            open()
+            handleGifList('trending')
+          }}
           colorScheme='black' 
           variant='outline'
           borderRadius='1rem'
@@ -55,7 +55,14 @@ export function GifPopup(props){
           <BiSticker size='2rem'/>
         </Button>
       </PopoverTrigger>
-      <PopoverContent bg='#042c60' color='white'position='absolute' right='0' bottom='0'>
+      <PopoverContent 
+        bg='#042c60' 
+        color='white'
+        position='absolute' 
+        right='0' 
+        bottom='0'
+        w='max-content' 
+      >
         <PopoverHeader>
         <InputGroup>
           <InputLeftElement
@@ -76,14 +83,13 @@ export function GifPopup(props){
         </PopoverHeader>
         <UnorderedList
           display='grid'
-          gridTemplateColumns='repeat(3, 1fr)'
-          gap='0.3rem'
           flexDirection='row'
-          w='auto'
+          gridTemplateColumns={['repeat(2, 1fr)','repeat(3, 1fr)', 'repeat(3, 1fr)', 'repeat(3, 1fr)']}
           maxH='30vh'
-          overflowY='scroll'
+          gap='0.3rem'
           p='0'
           m='0.5rem'
+          overflowY='scroll'
         >
           { gifs.map(gif => {
             return (

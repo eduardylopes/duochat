@@ -1,19 +1,26 @@
 import { set, push, ref, onValue, off } from 'firebase/database'
 import { database, auth } from '../services/firebase'
 import { RiRadioButtonLine } from 'react-icons/ri'
-import toast, { Toaster } from 'react-hot-toast';
 import { useEffect, useState } from 'react'
 import { format } from 'date-fns'
 import pt from 'date-fns/locale/pt-BR'
 import { useBeforeunload } from 'react-beforeunload';
-import { Button, Tag, TagLabel, Avatar, Stack } from '@chakra-ui/react'
+import { 
+  Button, 
+  Tag, 
+  TagLabel, 
+  Avatar, 
+  Stack, 
+  UnorderedList, 
+  Box, 
+  Textarea, 
+  HStack 
+} from '@chakra-ui/react'
 import { ChatIcon, DeleteIcon, ArrowLeftIcon } from '@chakra-ui/icons'
-import { GifPopup } from '../components/GifPopup'
 
+import { GifPopup } from '../components/GifPopup'
 import { Message } from '../components/Message'
 import { useAuth } from '../hooks/useAuth'
-
-import styles from '../styles/pages/Chat.module.scss'
 
 function Chat() {
   const [newMessage, setNewMessage] = useState('')
@@ -80,33 +87,67 @@ function Chat() {
   }
 
   return (
-    <div
-      className={styles.body}
+    <Box
+      display='flex'
+      alignItems='center'
+      justifyContent='center'
+      w='100vw'
+      h='100vh'
+      bg='#235390'
+      backgroundImage="url('/star-pattern.svg')"
     >
-      <main className={styles.mainContent}>
-        <section className={styles.section}>
-          <header className={styles.header}>
-            <div>
-              <Tag 
-                size='lg' 
-                key='lg' 
-                variant='subtle'
-                colorScheme='green'
-              >
-                <RiRadioButtonLine size='1rem'/>
-                <TagLabel m='0.5rem'>{onlineUsers} online</TagLabel>
-              </Tag>
-            </div>
-              <Button
-                onClick={() => exitAccount()}
-                leftIcon={<ArrowLeftIcon />} 
-                colorScheme='red' 
-                variant='solid'
-              >
-                Sair
-              </Button>
-          </header>
-          <ul className={styles.messageList}>
+      <Box
+        w={['100vw', '100vw', '768px', '768px']}
+        h={['100vh', '100vh', '90vh', '90vh']}
+        bgGradient='linear(to-tr, #042c60, #235390)'
+        p='0 1rem 1rem 1rem'
+        borderRadius={['0', '0', '1rem', '1rem']}
+        justifyContent='space-between'
+      >
+        <Box 
+          as='header'
+          display='flex'
+          flexDirection='row'
+          justifyContent='space-between'
+          alignItems='center'
+          py='1rem'
+          h='60px'
+        >
+          <Box>
+            <Tag
+              size='lg' 
+              key='lg' 
+              variant='subtle'
+              colorScheme='green'
+            >
+              <RiRadioButtonLine size='1rem'/>
+              <TagLabel m='0.5rem'>{onlineUsers} online</TagLabel>
+            </Tag>
+          </Box>
+            <Button
+              onClick={() => exitAccount()}
+              leftIcon={<ArrowLeftIcon />} 
+              colorScheme='red' 
+              variant='solid'
+            >
+              Sair
+            </Button>
+        </Box>
+
+        <Box
+          display='flex'
+          flexDirection='column'
+          justifyContent='space-between'
+          h='calc(100% - 60px)'
+        >
+          <UnorderedList
+            display='flex'
+            flexDirection='column-reverse'
+            p='0'
+            m='0'
+            overflowY='scroll'
+            mb='1rem'
+          >
             { messages.map(message => {
               return (
                 <Message
@@ -118,51 +159,70 @@ function Chat() {
                 />
               )
             })}
-          </ul>
-          <div className={styles.userInput}>
-            <Avatar name={user?.name} src={user?.avatar} size='lg'/>
-            <div>
-              <Stack
-                display='flex'
-                flexDirection='row'
-                alignItems='center'
-                w='100%'
+          </UnorderedList>
+          <HStack
+            display='flex'
+            flexDirection='column'
+            justifyContent='center'
+            alignItems='flex-start'
+            spacing='1rem'
+            height='max-content'
+          >
+            <HStack
+              display='flex'
+              flexDirection='row'
+              w='100%'
+              spacing='1rem'
+            >
+              <Avatar name={user?.name} src={user?.avatar} size='lg'/>
+              <Textarea
+                onChange={(event) => setNewMessage(event.target.value)}
+                onKeyDown={(event) => sendMessageWithEnter(event)}
+                placeholder='Dexar um novo comentário'
+                resize='none'
+                value={newMessage}
+                h='100%'
+                bg='#042c60'
+                color='#FFF'
+                flex='1'
+              />
+              <GifPopup 
+                onStickerClick={(gifPicure) => {
+                  handleSendMessage(`:sticker:${gifPicure}`);
+                }}
+              />
+            </HStack>
+            <Box
+              display={['none', 'none', 'flex', 'flex', 'flex']}
+              py='1rem'
+              w='auto'
+              h='100%'
+              pb='0'
+            >
+              <Button 
+                onClick={() => handleSendMessage()}
+                leftIcon={<ChatIcon />} 
+                colorScheme='green' 
+                variant='solid'
+                mr='0.5rem'
               >
-                <textarea
-                  onChange={(event) => setNewMessage(event.target.value)}
-                  onKeyDown={(event) => sendMessageWithEnter(event)}
-                  placeholder='Dexar um novo comentário'
-                  value={newMessage}
-                />
-                <GifPopup 
-                  onStickerClick={(gifPicure) => {
-                    handleSendMessage(`:sticker:${gifPicure}`);
-                  }}
-                />
-              </ Stack>
-              <div>
-                <Button 
-                  onClick={() => handleSendMessage()}
-                  leftIcon={<ChatIcon />} 
-                  colorScheme='green' 
-                  variant='solid'
-                >
-                  Enviar
-                </Button>
-                <Button
-                  onClick={() => setNewMessage('')}
-                  leftIcon={<DeleteIcon />} 
-                  colorScheme='red' 
-                  variant='outline'
-                >
-                  Cancelar
-                </Button>
-              </div>
-            </div>
-          </div>
-        </section>
-      </main>
-    </div>
+                Enviar
+              </Button>
+              <Button
+                onClick={() => setNewMessage('')}
+                leftIcon={<DeleteIcon />} 
+                colorScheme='red' 
+                variant='outline'
+                w='auto'
+                px='0.5rem'
+              >
+                Cancelar
+              </Button>
+            </Box>
+          </HStack>
+        </Box>
+      </Box>
+    </Box>
   )
 }
 
