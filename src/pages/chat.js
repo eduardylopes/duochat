@@ -140,7 +140,7 @@ function Chat() {
                   placeholder='Dexar um novo comentário'
                   value={newMessage}
                 />
-                <GifPopup />
+                {/* <GifPopup /> */}
               </ Stack>
               <div>
                 <Button 

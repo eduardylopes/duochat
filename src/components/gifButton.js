@@ -22,7 +22,6 @@ import { AiOutlineFileGif } from 'react-icons/ai'
 import { useRef } from 'react'
 
 export function GifPopup() {
-  const initialFocusRef = useRef()
   return (
     <Popover
       initialFocusRef={initialFocusRef}

@@ -25,10 +25,10 @@ export function Message(props) {
 
       { isAuthor &&
         <Tooltip hasArrow label="Excluir" aria-label='Excluir'>
-            <CloseButton 
-              size='md'
-              onClick={() => handleDeleteMessage()}
-            />
+          <CloseButton 
+            size='md'
+            onClick={() => handleDeleteMessage()}
+          />
         </Tooltip>
       }
       <Avatar name={props.author.name} src={props.author.avatar} size='lg'/>
