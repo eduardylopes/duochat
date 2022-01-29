@@ -96,8 +96,8 @@ function Chat() {
                 variant='subtle'
                 colorScheme='green'
               >
-                <TagLeftIcon boxSize='20px' as={ViewIcon} />
-                <TagLabel>{onlineUsers} online</TagLabel>
+                <RiRadioButtonLine size='1rem'/>
+                <TagLabel m='0.5rem'>{onlineUsers} online</TagLabel>
               </Tag>
             </div>
               <Button
