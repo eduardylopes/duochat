@@ -76,7 +76,7 @@ export function Message(props) {
             {props.date}
             </Text>
         </Box>
-        { props.content.startsWith(':stickers:') ? 
+        { props.content.startsWith(':sticker:') ? 
           (
             <Image
               w='100%'
