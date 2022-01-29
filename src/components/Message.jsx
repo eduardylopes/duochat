@@ -2,6 +2,7 @@ import { RiDeleteBin2Line } from 'react-icons/ri'
 import { ref, set } from 'firebase/database'
 import { database } from '../services/firebase';
 import { Tooltip, CloseButton } from '@chakra-ui/react'
+import { Avatar, AvatarBadge, AvatarGroup } from '@chakra-ui/react'
 
 import { useAuth } from '../hooks/useAuth';
 
@@ -20,18 +21,17 @@ export function Message(props) {
   }
 
   return (
-    <div className={styles.container}>
+    <li className={`${styles.container} ${props.owner && styles.ownerContainer}`}>
 
       { isAuthor &&
-        <Tooltip label="Excluir" aria-label='Excluir'>
+        <Tooltip hasArrow label="Excluir" aria-label='Excluir'>
             <CloseButton 
               size='md'
               onClick={() => handleDeleteMessage()}
             />
         </Tooltip>
       }
-
-      <img src={props.author.avatar} alt="" />
+      <Avatar name={props.author.name} src={props.author.avatar} size='lg'/>
       <div>
         <div>
           <span>{props.author.name}</span> 
@@ -39,6 +39,6 @@ export function Message(props) {
         </div>
         <p>{props.content}</p>
       </div>
-    </div>
+    </li>
   )
 }

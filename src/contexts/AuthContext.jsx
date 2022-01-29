@@ -2,6 +2,7 @@ import { signInWithPopup, signOut } from "firebase/auth";
 import { createContext, useEffect, useState } from "react";
 import { auth, githubProvider, googleProvider } from "../services/firebase";
 import { set, ref, get, child, update, onValue } from 'firebase/database'
+import { useToast } from '@chakra-ui/react'
 import { database } from '../services/firebase'
 import { useRouter } from 'next/router'
 import toast from "react-hot-toast";
@@ -9,6 +10,7 @@ import toast from "react-hot-toast";
 export const AuthContext = createContext({});
 
 export function AuthContextProvider(props) {
+  const toasted = useToast()
   const [onlineUsers, setOnlineUsers] = useState(0)
   const [user, setUser] = useState();
   const router = useRouter()
@@ -83,8 +85,24 @@ export function AuthContextProvider(props) {
 
       router.push('/chat')
 
-    } catch(e) {
-      toast.error('Não foi possivel efetuar o login, tente novamente mais tarde.')
+      toasted({
+        title: 'Usuário conectado',
+        position: 'top',
+        status: 'success',
+        duration: 2000,
+        isClosable: true,
+      })
+
+    }
+    catch (e) {
+      toasted({
+        title: 'Falha ao logar',
+        description: 'Tente novamente mais tarde',
+        position: 'top',
+        status: 'error',
+        duration: 3000,
+        isClosable: true,
+      })
     }
   }
 

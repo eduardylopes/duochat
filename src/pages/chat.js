@@ -7,6 +7,8 @@ import { useEffect, useState } from 'react'
 import { format } from 'date-fns'
 import pt from 'date-fns/locale/pt-BR'
 import { useBeforeunload } from 'react-beforeunload';
+import { Button, Badge, Tag, TagLeftIcon, TagLabel, Avatar } from '@chakra-ui/react'
+import { ChatIcon, DeleteIcon, ArrowLeftIcon, ViewIcon, SlideFade } from '@chakra-ui/icons'
 
 import { DefaultButton } from '../components/DefaultButton'
 import { Message } from '../components/Message'
@@ -15,6 +17,7 @@ import { useAuth } from '../hooks/useAuth'
 import styles from '../styles/pages/Chat.module.scss'
 
 function Chat() {
+
   const [newMessage, setNewMessage] = useState('')
   const [messages, setMessages] = useState([])
   const { user, exitAccount, onlineUsers, setOnlineUsers } = useAuth();
@@ -82,23 +85,36 @@ function Chat() {
     <div
       className={styles.body}
     >
-      <Toaster />
       <main className={styles.mainContent}>
         <section className={styles.section}>
           <header className={styles.header}>
             <div>
-              <RiRadioButtonLine size={20}/>
-              <span>{onlineUsers} Online</span>
+              <Tag 
+                size='lg' 
+                key='lg' 
+                variant='subtle'
+                colorScheme='green'
+              >
+                <TagLeftIcon boxSize='20px' as={ViewIcon} />
+                <TagLabel>{onlineUsers} online</TagLabel>
+              </Tag>
             </div>
-              <button onClick={() => exitAccount()}>
-                <span>Sair</span>
-                <RiLogoutBoxLine size={28}/>
-              </button>
+              <Button
+                onClick={() => exitAccount()}
+                leftIcon={<ArrowLeftIcon />} 
+                colorScheme='red' 
+                variant='solid'
+              >
+                Sair
+              </Button>
           </header>
-            <div className={styles.messageList}>
+          <ul className={styles.messageList}>
             { messages.map(message => {
+
+              const owner = message.author.userId == user?.id ? true : false
               return (
                 <Message
+                  owner={owner}
                   key={message.messageId}
                   messageId={message.messageId}
                   author={message.author}
@@ -107,9 +123,9 @@ function Chat() {
                 />
               )
             })}
-          </div>
+          </ul>
           <div className={styles.userInput}>
-            <img className={styles.bottonProfile} src={user?.avatar} alt="" />
+            <Avatar name={user?.name} src={user?.avatar} size='lg'/>
             <div>
               <textarea
                 onChange={(event) => setNewMessage(event.target.value)}
@@ -118,22 +134,22 @@ function Chat() {
                 value={newMessage}
               />
               <div>
-                <DefaultButton
+                <Button 
                   onClick={handleSendMessage}
-                  backgroundColor={'#06FF00'}
-                  borderColor={'#125C13'}
-                  width={'110px'}
+                  leftIcon={<ChatIcon />} 
+                  colorScheme='green' 
+                  variant='solid'
                 >
-                  <span className={styles.sendButtonText}>Enviar</span>
-                </DefaultButton>
-                <DefaultButton
+                  Enviar
+                </Button>
+                <Button
                   onClick={() => setNewMessage('')}
-                  backgroundColor={'transparent'}
-                  borderColor={'red'}
-                  width={'110px'}
+                  leftIcon={<DeleteIcon />} 
+                  colorScheme='red' 
+                  variant='outline'
                 >
-                  <span className={styles.canceButtonText}>Cancelar</span>
-                </DefaultButton>
+                  Cancelar
+                </Button>
               </div>
             </div>
           </div>
