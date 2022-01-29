@@ -25,7 +25,7 @@ export function Message(props) {
       width='max-content'
       bg='#235390'
       maxWidth='80%'
-      p='1rem'
+      p='1rem 1.5rem 1rem 1rem'
       mt='1rem'
       borderRadius='1rem'
       position='relative'
@@ -38,6 +38,7 @@ export function Message(props) {
             right='0'
             bottom='0'
             size='md'
+            color='red.600'
             onClick={() => handleDeleteMessage()}
           />
         </Tooltip>
