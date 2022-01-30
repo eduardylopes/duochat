@@ -1,7 +1,7 @@
 import { set, push, ref, onValue, off } from 'firebase/database'
 import { database, auth } from '../services/firebase'
 import { RiRadioButtonLine } from 'react-icons/ri'
-import { useEffect, useState } from 'react'
+import { useEffect, useState, useRef } from 'react'
 import { format } from 'date-fns'
 import pt from 'date-fns/locale/pt-BR'
 import { useBeforeunload } from 'react-beforeunload';
@@ -13,9 +13,10 @@ import {
   UnorderedList, 
   Box, 
   Textarea, 
-  HStack 
+  HStack,
+  VStack
 } from '@chakra-ui/react'
-import { ChatIcon, DeleteIcon, ArrowLeftIcon } from '@chakra-ui/icons'
+import { ArrowRightIcon, ArrowLeftIcon } from '@chakra-ui/icons'
 
 import { GifPopup } from '../components/GifPopup'
 import { Message } from '../components/Message'
@@ -23,7 +24,7 @@ import { useAuth } from '../hooks/useAuth'
 import { useToast } from '@chakra-ui/react'
 
 function Chat() {
-
+  const chatList = useRef()
   const [newMessage, setNewMessage] = useState('')
   const [messages, setMessages] = useState([])
   const { user, exitAccount, onlineUsers } = useAuth();
@@ -53,6 +54,16 @@ function Chat() {
     return () => off(messageRef)
 
   }, [user?.id])
+
+  useEffect(() => {
+    if (chatList && chatList.current && chatList.current.firstChild) {
+      chatList.current.scrollTo({
+        behavior: "smooth",
+        top: chatList.current.firstChild.offsetTop + 100
+      });
+    }
+
+  }, [messages, chatList])
 
   function sendMessageWithEnter(event) {
     if(event.key == 'Enter') {
@@ -155,9 +166,10 @@ function Chat() {
             m='0'
             overflowY='scroll'
             mb='1rem'
+            ref={chatList}
           >
-            { messages.map(message => {
-              return (
+            { messages.map(message => 
+              (
                 <Message
                   key={message.messageId}
                   messageId={message.messageId}
@@ -165,8 +177,8 @@ function Chat() {
                   content={message.content}
                   date={message.date}
                 />
-            )
-            })}
+              ))
+            }
           </UnorderedList>
           <HStack
             display='flex'
@@ -179,14 +191,16 @@ function Chat() {
             <HStack
               display='flex'
               flexDirection='row'
+              alignItems='center'
+              justifyContent='center'
               w='100%'
               spacing='1rem'
             >
               <Avatar name={user?.name} src={user?.avatar} size='lg'/>
               <Textarea
                 onChange={(event) => setNewMessage(event.target.value)}
-                onKeyDown={(event) => sendMessageWithEnter(event)}
-                value={newMessage}
+                // onKeyDown={(event) => sendMessageWithEnter(event)}
+                // value={newMessage}
                 placeholder='Dexar um novo comentário'
                 resize='none'
                 h='100%'
@@ -194,39 +208,33 @@ function Chat() {
                 color='#FFF'
                 flex='1'
               />
-              <GifPopup 
-                onStickerClick={(gifPicure) => {
-                  handleSendMessage(`:sticker:${gifPicure}`);
-                }}
-              />
-            </HStack>
-            <Box
-              display={['none', 'none', 'flex', 'flex', 'flex']}
-              py='1rem'
-              w='auto'
-              h='100%'
-              pb='0'
-            >
-              <Button 
-                onClick={() => handleSendMessage()}
-                leftIcon={<ChatIcon />} 
-                colorScheme='green' 
-                variant='solid'
-                mr='0.5rem'
-              >
-                Enviar
-              </Button>
-              <Button
-                onClick={() => setNewMessage('')}
-                leftIcon={<DeleteIcon />} 
-                colorScheme='red' 
-                variant='outline'
+              <VStack
+                flexDirection='column'
+                justifyContent={['center', 'center', 'space-between', 'space-between']}
+                py='1rem'
                 w='auto'
-                px='0.5rem'
+                h='100%'
+                py='0'
               >
-                Cancelar
-              </Button>
-            </Box>
+                <Button
+                  display={['none', 'none', 'flex', 'flex', 'flex']}
+                  onClick={() => handleSendMessage()}
+                  colorScheme='green'
+                  alignItems='center'
+                  justifyContent='center'
+                  variant='solid'
+                  w='100%'
+                  p='0'
+                >
+                  <ArrowRightIcon />
+                </Button>
+                <GifPopup
+                  onStickerClick={(gifPicure) => {
+                    handleSendMessage(`:sticker:${gifPicure}`);
+                  }}
+                />
+              </VStack>
+            </HStack>
           </HStack>
         </Box>
       </Box>

@@ -10,9 +10,9 @@ import {
   InputGroup, 
   Button
 } from '@chakra-ui/react'
+import { BsFillEmojiSmileFill } from 'react-icons/bs'
 
 import { SearchIcon } from '@chakra-ui/icons'
-import { BiSticker } from 'react-icons/bi'
 import { useState } from 'react'
 import { getGif } from '../services/giphy'
 
@@ -35,9 +35,9 @@ export function GifPopup(props){
   return (
     <Popover
       placement='left'
-      position='relative'
       onClose={close}
       isOpen={isOpen}
+      position='absolute'
     >
       <PopoverTrigger>
         <Button
@@ -51,16 +51,15 @@ export function GifPopup(props){
           px='0.5rem'
           color='white'
         >
-          <BiSticker size='2rem'/>
+          <BsFillEmojiSmileFill size='2rem'/>
         </Button>
       </PopoverTrigger>
       <PopoverContent 
         bg='#042c60' 
         color='white'
-        position='absolute' 
         right='0' 
         bottom='0'
-        w='max-content'
+        w='100%'
       >
         <PopoverHeader>
         <InputGroup

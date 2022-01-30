@@ -85,7 +85,7 @@ export function Message(props) {
       <VStack
         display='flex'
         spacing='1rem'
-        bg='#235390'
+        bg={isAuthor ? 'green.700' : '#235390'}
         borderRadius='1rem'
         padding='1rem'
       >
