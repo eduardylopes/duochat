@@ -28,7 +28,7 @@ function Chat() {
   const { user, exitAccount, onlineUsers } = useAuth();
   const toast = useToast();
 
-  useBeforeunload(event => exitAccount())
+  useBeforeunload(() => exitAccount())
 
   useEffect(() => {
     const messageRef = ref(database, 'messages/')
@@ -53,18 +53,6 @@ function Chat() {
 
   }, [user?.id])
 
-  const messageListRef = useRef();
-
-  useEffect(() => {
-    if (messageListRef.current) {
-      messageListRef.current.scrollIntoView({
-        behavior: "smooth",
-        block: "end",
-        inline: "nearest",
-      });
-    }
-  }, [messageListRef]);
-
   function sendMessageWithEnter(event) {
     if(event.key == 'Enter') {
       event.preventDefault();
@@ -72,8 +60,8 @@ function Chat() {
     }
   }
 
-  async function handleSendMessage(msg) {
-      if (msg?.trim() == '') {
+  async function handleSendMessage(newMessage) {
+      if (newMessage.trim() == '') {
         return;
       }
 
@@ -89,7 +77,7 @@ function Chat() {
       }
 
       const message = {
-        content: msg,
+        content: newMessage,
         date: format(new Date, "dd 'de' MMM, 'às' HH:mm", {locale: pt}),
         author: {
           userId: user.id,
@@ -175,9 +163,8 @@ function Chat() {
                   author={message.author}
                   content={message.content}
                   date={message.date}
-                  ref={messageListRef}
                 />
-              )
+            )
             })}
           </UnorderedList>
           <HStack
