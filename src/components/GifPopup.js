@@ -60,12 +60,20 @@ export function GifPopup(props){
         position='absolute' 
         right='0' 
         bottom='0'
-        w='max-content' 
+        w='max-content'
       >
         <PopoverHeader>
-        <InputGroup>
+        <InputGroup
+          alignItems='center'
+          position='relative'
+        >
+          <SearchIcon 
+            position='absolute'
+            left='10px'
+          />
           <Input 
             placeholder='Pesquise por um GIF'
+            pl='2rem'
             onKeyDown={event => {
               if(event.key == 'Enter') {
                 handleGifList('search', inputValue)

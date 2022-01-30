@@ -32,7 +32,7 @@ export function AuthContextProvider(props) {
 
   useEffect(() => {
     const onlineUsersRef = ref(database, '/online-users')
-    const test = onValue(onlineUsersRef, onlineUserDatabase => {
+    onValue(onlineUsersRef, onlineUserDatabase => {
       setOnlineUsers(onlineUserDatabase.val())
     }, {
         onlyOnce: false
@@ -133,7 +133,7 @@ export function AuthContextProvider(props) {
           signInWithGithub, 
           exitAccount, 
           database, 
-          onlineUsers
+          onlineUsers,
         }}
       >
         {props.children}
