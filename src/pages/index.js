@@ -4,7 +4,6 @@ import { BsGithub } from 'react-icons/bs'
 import { RiRadioButtonLine } from 'react-icons/ri'
 
 import { Button, Box, Image, Text, Heading, SimpleGrid, Stack } from '@chakra-ui/react'
-import { Toaster } from 'react-hot-toast';
 
 export default function Home() {
   const { signInWithGithub, signInWithGoogle, onlineUsers} = useAuth();
@@ -20,7 +19,6 @@ export default function Home() {
       backgroundImage="url('/star-pattern.svg')"
       fontFamily='M PLUS Rounded 1c'
     >
-      <Toaster />
       <Stack
         display='flex'
         flexDirection={['column', 'column', 'row', 'row']}

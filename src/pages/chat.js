@@ -1,7 +1,7 @@
 import { set, push, ref, onValue, off } from 'firebase/database'
 import { database, auth } from '../services/firebase'
 import { RiRadioButtonLine } from 'react-icons/ri'
-import { useEffect, useState } from 'react'
+import { useEffect, useState, useRef } from 'react'
 import { format } from 'date-fns'
 import pt from 'date-fns/locale/pt-BR'
 import { useBeforeunload } from 'react-beforeunload';
@@ -9,8 +9,7 @@ import {
   Button, 
   Tag, 
   TagLabel, 
-  Avatar, 
-  Stack, 
+  Avatar,
   UnorderedList, 
   Box, 
   Textarea, 
@@ -21,11 +20,13 @@ import { ChatIcon, DeleteIcon, ArrowLeftIcon } from '@chakra-ui/icons'
 import { GifPopup } from '../components/GifPopup'
 import { Message } from '../components/Message'
 import { useAuth } from '../hooks/useAuth'
+import { useToast } from '@chakra-ui/react'
 
 function Chat() {
   const [newMessage, setNewMessage] = useState('')
   const [messages, setMessages] = useState([])
   const { user, exitAccount, onlineUsers } = useAuth();
+  const toast = useToast();
 
   useBeforeunload(event => exitAccount())
 
@@ -52,6 +53,18 @@ function Chat() {
 
   }, [user?.id])
 
+  const messageListRef = useRef();
+
+  useEffect(() => {
+    if (messageListRef.current) {
+      messageListRef.current.scrollIntoView({
+        behavior: "smooth",
+        block: "end",
+        inline: "nearest",
+      });
+    }
+  }, [messageListRef]);
+
   function sendMessageWithEnter(event) {
     if(event.key == 'Enter') {
       event.preventDefault();
@@ -60,12 +73,18 @@ function Chat() {
   }
 
   async function handleSendMessage(msg) {
-      if (msg.trim() == '') {
+      if (msg?.trim() == '') {
         return;
       }
 
       if(!auth.currentUser) {
-        toast.error("Você deve estar logado para mandar mensagens")
+        toast({
+          title: 'Você deve estar logado para mandar mensagens',
+          position: 'top',
+          status: 'error',
+          duration: 2000,
+          isClosable: true,
+        })
         return
       }
 
@@ -156,6 +175,7 @@ function Chat() {
                   author={message.author}
                   content={message.content}
                   date={message.date}
+                  ref={messageListRef}
                 />
               )
             })}

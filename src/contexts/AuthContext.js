@@ -1,16 +1,15 @@
 import { signInWithPopup, signOut } from "firebase/auth";
 import { createContext, useEffect, useState } from "react";
 import { auth, githubProvider, googleProvider } from "../services/firebase";
-import { set, ref, get, child, update, onValue, off } from 'firebase/database'
+import { set, ref, get, child, onValue, off } from 'firebase/database'
 import { useToast } from '@chakra-ui/react'
 import { database } from '../services/firebase'
 import { useRouter } from 'next/router'
-import toast from "react-hot-toast";
 
 export const AuthContext = createContext({});
 
 export function AuthContextProvider(props) {
-  const toasted = useToast()
+  const toast = useToast()
   const [onlineUsers, setOnlineUsers] = useState(0)
   const [user, setUser] = useState();
   const router = useRouter()
@@ -58,10 +57,19 @@ export function AuthContextProvider(props) {
         const signOutPromisse = await signOut(auth)
         setUsersOnlineInDatabase(Number(-1))
         router.push('/')
+      } else {
+        router.push('/')
       }
 
     } catch (e) {
-      toast.error('Ocorreu um erro')
+      toast({
+        title: 'Ocorreu um erro inesperado',
+        position: 'top',
+        status: 'error',
+        duration: 2000,
+        isClosable: true,
+      })
+
     }
   }
 
@@ -88,7 +96,7 @@ export function AuthContextProvider(props) {
 
       router.push('/chat')
 
-      toasted({
+      toast({
         title: 'Usuário conectado',
         position: 'top',
         status: 'success',
@@ -98,7 +106,7 @@ export function AuthContextProvider(props) {
 
     }
     catch (e) {
-      toasted({
+      toast({
         title: 'Falha ao logar',
         description: 'Tente novamente mais tarde',
         position: 'top',
