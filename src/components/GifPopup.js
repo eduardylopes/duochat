@@ -50,6 +50,9 @@ export function GifPopup(props){
           borderRadius='1rem'
           px='0.5rem'
           color='white'
+          position='absolute'
+          right='0'
+          bottom='0'
         >
           <BsFillEmojiSmileFill size='2rem'/>
         </Button>
@@ -60,6 +63,7 @@ export function GifPopup(props){
         right='0' 
         bottom='0'
         w='100%'
+        mb='5rem'
       >
         <PopoverHeader>
         <InputGroup

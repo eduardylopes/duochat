@@ -35,6 +35,7 @@ function Chat() {
   useEffect(() => {
     const messageRef = ref(database, 'messages/')
     onValue(messageRef, message => {
+
       const databaseMessage = message.val() || {}
       
       const parsedMessages = Object.entries(databaseMessage).map(([key, value]) => {
@@ -45,8 +46,10 @@ function Chat() {
           date: value.date
         }
       })
-
-      setMessages(parsedMessages.reverse())
+      const t0 = performance.now();
+      setMessages(parsedMessages)
+      const t1 = performance.now();
+      console.log(`Call to doSomething took ${t1 - t0} milliseconds.`);
     });
 
   }, [])
@@ -211,6 +214,7 @@ function Chat() {
                 py='1rem'
                 w='auto'
                 h='100%'
+                position='relative'
                 py='0'
               >
                 <Button
