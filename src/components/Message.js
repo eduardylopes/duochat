@@ -1,9 +1,9 @@
 import { ref, set } from 'firebase/database'
 import { database } from '../services/firebase';
-import { Tooltip, CloseButton, Text } from '@chakra-ui/react'
+import { Tooltip, Text } from '@chakra-ui/react'
 import { Avatar, Image, Box, VStack, ListItem } from '@chakra-ui/react'
-
 import { useAuth } from '../hooks/useAuth';
+import { OptionButton } from './OptionButton'
 
 export function Message(props) {
 
@@ -11,12 +11,15 @@ export function Message(props) {
   const isAuthor = props.author.userId === user?.id
 
   function handleDeleteMessage() {
-
     if(isAuthor) {
       const messageRef = ref(database, `/messages/${props.messageId}`)
       set(messageRef, null)
     }
   }
+
+  // function handleCopyToClipboard() {
+  //   navigator.clipboard.writeText(this.state.textToCopy)}
+  // }
 
   return (
     <ListItem
@@ -25,25 +28,20 @@ export function Message(props) {
       width='max-content'
       maxWidth='80%'
       p='0.5rem 1.5rem 0 1rem'
-      // mt='1rem'
       borderRadius='1rem'
       position='relative'
       ml={isAuthor ? 'auto' : '0'}
     >
 
-      { isAuthor &&
-        <Tooltip hasArrow label="Excluir" aria-label='Excluir'>
-          <CloseButton 
-            position='absolute'
-            right='2rem'
-            bottom='0.3rem'
-            size='small'
-            color='red.600'
-            borderRadius='50%'
-            onClick={() => handleDeleteMessage()}
-          />
-        </Tooltip>
-      }
+      <Tooltip hasArrow label="Opções" aria-label='Opções'>
+        <OptionButton 
+          isAuthor={isAuthor}
+          onDelete={handleDeleteMessage}
+          // onCopy={handleCopyToClipboard}
+          // onEdit={handleEditMessage}
+        />
+      </Tooltip>
+
       <Avatar 
         display={['none', 'flex', 'flex', 'flex' ]}
         size='lg'
