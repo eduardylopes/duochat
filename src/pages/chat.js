@@ -1,7 +1,7 @@
 import { set, push, ref, onValue, off } from 'firebase/database'
 import { database, auth } from '../services/firebase'
 import { RiRadioButtonLine } from 'react-icons/ri'
-import { useEffect, useState, useRef } from 'react'
+import { useEffect, useState } from 'react'
 import { format } from 'date-fns'
 import pt from 'date-fns/locale/pt-BR'
 import { useBeforeunload } from 'react-beforeunload';

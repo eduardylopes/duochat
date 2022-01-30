@@ -1,39 +1,60 @@
 import { ref, set } from 'firebase/database'
 import { database } from '../services/firebase';
-import { Tooltip, Text } from '@chakra-ui/react'
+import { Text, Button } from '@chakra-ui/react'
 import { Avatar, Image, Box, VStack, ListItem } from '@chakra-ui/react'
 import { useAuth } from '../hooks/useAuth';
 import { OptionButton } from './OptionButton'
-import { useState } from 'react'
+import { useState, useRef } from 'react'
+import { useToast } from '@chakra-ui/react'
 
 export function Message(props) {
-  const [isCopied, setIsCopied] = useState(false);
-  const [copyText, setCopyText] = useState('')
+  const toast = useToast();
+  const messageRef = useRef();
   const { user } = useAuth();
   const isAuthor = props.author.userId === user?.id;
 
   function handleDeleteMessage() {
     if(isAuthor) {
-      const messageRef = ref(database, `/messages/${props.messageId}`)
-      set(messageRef, null)
+      const messageDatabaseRef = ref(database, `/messages/${props.messageId}`)
+      set(messageDatabaseRef, null)
     }
   }
 
-  function handleCopyMessage(text) {
+  async function handleCopyToClipboard(messageRef) {
+    const content = messageRef.current?.innerText 
+
+    console.log(content)
+    if (content == undefined) {
+      toast({
+        title: 'Não é possivel copiar imagens, o dev é preguiçoso',
+        position: 'top',
+        status: 'warning',
+        duration: 2000,
+        isClosable: true,
+      })
+      return
+    }
 
     try {
-      async function copyTextToClipboard(text) {
-        if ('clipboard' in navigator) {
-          const response = await navigator.clipboard.writeText(text);
-          console.log(response)
-        }
-      }
-    } catch (e) {
-      console.log(e)
+      await navigator.clipboard.writeText(content)
+      toast({
+        title: 'Mensagem copiada!',
+        position: 'top',
+        status: 'success',
+        duration: 2000,
+        isClosable: true,
+      })
+    } 
+    catch (e) {
+      toast({
+        title: 'Falha ao copiar',
+        position: 'top',
+        status: 'error',
+        duration: 2000,
+        isClosable: true,
+      })
     }
   }
-
-  // handleCopyMessage('eduardy####')
 
   return (
     <ListItem
@@ -49,7 +70,8 @@ export function Message(props) {
       <OptionButton
         isAuthor={isAuthor}
         onDelete={handleDeleteMessage}
-        // onCopy={handleCopyToClipboard}
+        onCopy={handleCopyToClipboard}
+        textRef={messageRef}
         // onEdit={handleEditMessage}
       />
 
@@ -67,7 +89,7 @@ export function Message(props) {
         borderRadius='1rem'
         padding='1rem'
       >
-        <Box 
+        <Box
           display='flex'
           justifyContent='space-between'
           flexDirection='row'
@@ -102,6 +124,7 @@ export function Message(props) {
               w='100%'
               color='#fff'
               wordBreak='break-all'
+              ref={messageRef}
             >
               {props.content}
             </Text>

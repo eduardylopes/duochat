@@ -62,14 +62,16 @@ export function OptionButton(props) {
               Editar
             </MenuItem>
             <MenuItem
-              // onClick={() => props.onCopy()}
+              onClick={() => props.onCopy(props.textRef)}
               _hover={{ background: '#255390' }}
             >
               Copiar
             </MenuItem>
           </>
           ) : (
-          <MenuItem _hover={{ background: '#255390' }}>Copiar</MenuItem>
+          <MenuItem 
+            onClick={() => props.onCopy(props.textRef)}
+            _hover={{ background: '#255390' }}>Copiar</MenuItem>
         ) }
       </MenuList>
     </Menu>
