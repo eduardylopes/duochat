@@ -7,13 +7,10 @@ import {
   Text,
 } from '@chakra-ui/react'
 
-import { SettingsIcon } from '@chakra-ui/icons'
-
 export function OptionButton(props) {
+
   return (
-    <Menu
-      autoSelect={false}
-    >
+    <Menu autoSelect={false}>
       <MenuButton 
         as={Button}
         aria-label='Opções'
@@ -59,8 +56,17 @@ export function OptionButton(props) {
             >
               Excluir
             </MenuItem>
-            <MenuItem _hover={{ background: '#255390' }}>Editar</MenuItem>
-            <MenuItem _hover={{ background: '#255390' }}>Copiar</MenuItem>
+            <MenuItem 
+            _hover={{ background: '#255390' }}
+            >
+              Editar
+            </MenuItem>
+            <MenuItem
+              // onClick={() => props.onCopy()}
+              _hover={{ background: '#255390' }}
+            >
+              Copiar
+            </MenuItem>
           </>
           ) : (
           <MenuItem _hover={{ background: '#255390' }}>Copiar</MenuItem>

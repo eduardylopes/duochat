@@ -4,11 +4,13 @@ import { Tooltip, Text } from '@chakra-ui/react'
 import { Avatar, Image, Box, VStack, ListItem } from '@chakra-ui/react'
 import { useAuth } from '../hooks/useAuth';
 import { OptionButton } from './OptionButton'
+import { useState } from 'react'
 
 export function Message(props) {
-
+  const [isCopied, setIsCopied] = useState(false);
+  const [copyText, setCopyText] = useState('')
   const { user } = useAuth();
-  const isAuthor = props.author.userId === user?.id
+  const isAuthor = props.author.userId === user?.id;
 
   function handleDeleteMessage() {
     if(isAuthor) {
@@ -17,9 +19,21 @@ export function Message(props) {
     }
   }
 
-  // function handleCopyToClipboard() {
-  //   navigator.clipboard.writeText(this.state.textToCopy)}
-  // }
+  function handleCopyMessage(text) {
+
+    try {
+      async function copyTextToClipboard(text) {
+        if ('clipboard' in navigator) {
+          const response = await navigator.clipboard.writeText(text);
+          console.log(response)
+        }
+      }
+    } catch (e) {
+      console.log(e)
+    }
+  }
+
+  // handleCopyMessage('eduardy####')
 
   return (
     <ListItem
@@ -32,15 +46,12 @@ export function Message(props) {
       position='relative'
       ml={isAuthor ? 'auto' : '0'}
     >
-
-      <Tooltip hasArrow label="Opções" aria-label='Opções'>
-        <OptionButton 
-          isAuthor={isAuthor}
-          onDelete={handleDeleteMessage}
-          // onCopy={handleCopyToClipboard}
-          // onEdit={handleEditMessage}
-        />
-      </Tooltip>
+      <OptionButton
+        isAuthor={isAuthor}
+        onDelete={handleDeleteMessage}
+        // onCopy={handleCopyToClipboard}
+        // onEdit={handleEditMessage}
+      />
 
       <Avatar 
         display={['none', 'flex', 'flex', 'flex' ]}
