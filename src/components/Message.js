@@ -23,21 +23,21 @@ export function Message(props) {
       display='flex'
       flexDirection='row'
       width='max-content'
-      bg='#235390'
       maxWidth='80%'
-      p='1rem 1.5rem 1rem 1rem'
-      mt='1rem'
+      p='0.5rem 1.5rem 0 1rem'
+      // mt='1rem'
       borderRadius='1rem'
       position='relative'
       ml={isAuthor ? 'auto' : '0'}
     >
+
       { isAuthor &&
         <Tooltip hasArrow label="Excluir" aria-label='Excluir'>
           <CloseButton 
             position='absolute'
-            right='0'
-            bottom='0'
-            size='md'
+            right='2rem'
+            bottom='0.3rem'
+            size='small'
             color='red.600'
             borderRadius='50%'
             onClick={() => handleDeleteMessage()}
@@ -54,6 +54,9 @@ export function Message(props) {
       <VStack
         display='flex'
         spacing='1rem'
+        bg='#235390'
+        borderRadius='1rem'
+        padding='1rem'
       >
         <Box 
           display='flex'
@@ -82,7 +85,7 @@ export function Message(props) {
           (
             <Image
               w='100%'
-              borderRadius='1rem'
+              borderRadius='0.5rem'
               src={props.content.replace(':sticker:', '')}
             />
           ) : (

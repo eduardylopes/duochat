@@ -23,6 +23,7 @@ import { useAuth } from '../hooks/useAuth'
 import { useToast } from '@chakra-ui/react'
 
 function Chat() {
+
   const [newMessage, setNewMessage] = useState('')
   const [messages, setMessages] = useState([])
   const { user, exitAccount, onlineUsers } = useAuth();
