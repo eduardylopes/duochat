@@ -39,6 +39,7 @@ export function Message(props) {
             bottom='0'
             size='md'
             color='red.600'
+            borderRadius='50%'
             onClick={() => handleDeleteMessage()}
           />
         </Tooltip>

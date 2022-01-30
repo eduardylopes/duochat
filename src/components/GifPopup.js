@@ -7,7 +7,6 @@ import {
   UnorderedList,
   Image,
   Input, 
-  InputLeftElement, 
   InputGroup, 
   Button
 } from '@chakra-ui/react'
@@ -65,10 +64,6 @@ export function GifPopup(props){
       >
         <PopoverHeader>
         <InputGroup>
-          <InputLeftElement
-            pointerEvents='none'
-            children={<SearchIcon color='gray.300' />}
-          />
           <Input 
             placeholder='Pesquise por um GIF'
             onKeyDown={event => {

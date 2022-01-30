@@ -27,7 +27,7 @@ function Chat() {
   const [messages, setMessages] = useState([])
   const { user, exitAccount, onlineUsers } = useAuth();
 
-  // useBeforeunload(event => exitAccount())
+  useBeforeunload(event => exitAccount())
 
   useEffect(() => {
     const messageRef = ref(database, 'messages/')
@@ -82,7 +82,7 @@ function Chat() {
       const messageRef = ref(database, '/messages')
       const messageId = await push(messageRef)
       await set(messageId, message)
-      
+
       setNewMessage('')
   }
 
@@ -178,9 +178,9 @@ function Chat() {
               <Textarea
                 onChange={(event) => setNewMessage(event.target.value)}
                 onKeyDown={(event) => sendMessageWithEnter(event)}
+                value={newMessage}
                 placeholder='Dexar um novo comentário'
                 resize='none'
-                value={newMessage}
                 h='100%'
                 bg='#042c60'
                 color='#FFF'
