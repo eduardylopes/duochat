@@ -47,13 +47,9 @@ function Chat() {
       })
 
       setMessages(parsedMessages.reverse())
-    }, {
-      onlyOnce: false
     });
 
-    return () => off(messageRef)
-
-  }, [user?.id])
+  }, [])
 
   useEffect(() => {
     if (chatList && chatList.current && chatList.current.firstChild) {
@@ -199,8 +195,8 @@ function Chat() {
               <Avatar name={user?.name} src={user?.avatar} size='lg'/>
               <Textarea
                 onChange={(event) => setNewMessage(event.target.value)}
-                // onKeyDown={(event) => sendMessageWithEnter(event)}
-                // value={newMessage}
+                onKeyDown={(event) => sendMessageWithEnter(event)}
+                value={newMessage}
                 placeholder='Dexar um novo comentário'
                 resize='none'
                 h='100%'
@@ -208,6 +204,7 @@ function Chat() {
                 color='#FFF'
                 flex='1'
               />
+              
               <VStack
                 flexDirection='column'
                 justifyContent={['center', 'center', 'space-between', 'space-between']}
