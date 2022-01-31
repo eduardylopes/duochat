@@ -46,10 +46,7 @@ function Chat() {
           date: value.date
         }
       })
-      const t0 = performance.now();
-      setMessages(parsedMessages)
-      const t1 = performance.now();
-      console.log(`Call to doSomething took ${t1 - t0} milliseconds.`);
+      setMessages(parsedMessages.reverse())
     });
 
   }, [])
@@ -196,10 +193,14 @@ function Chat() {
               spacing='1rem'
             >
               <Avatar name={user?.name} src={user?.avatar} size='lg'/>
+
               <Textarea
-                onChange={(event) => setNewMessage(event.target.value)}
-                onKeyDown={(event) => sendMessageWithEnter(event)}
-                value={newMessage}
+                onKeyDown={event => {
+                  if(event.key === 'Enter') {
+                    event.preventDefault();
+                    handleSendMessage(event.target.value)
+                    event.target.value = ''
+                }}}
                 placeholder='Dexar um novo comentário'
                 resize='none'
                 h='100%'
