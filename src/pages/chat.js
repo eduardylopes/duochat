@@ -14,7 +14,7 @@ import {
   Box, 
   Textarea, 
   HStack,
-  VStack
+  VStack,
 } from '@chakra-ui/react'
 import { ArrowRightIcon, ArrowLeftIcon } from '@chakra-ui/icons'
 
@@ -44,7 +44,6 @@ function Chat() {
           content: value.content,
           author: value.author,
           date: value.date,
-          edited: value.edited
         }
       });
 
@@ -70,9 +69,9 @@ function Chat() {
     }
   }
 
-  async function handleSendMessage() {
+  async function handleSendMessage(newMessage) {
 
-      if (textArea.current.value.trim() == '') {
+      if (newMessage.trim() == '') {
         return;
       }
 
@@ -88,7 +87,7 @@ function Chat() {
       }
 
       const message = {
-        content: textArea.current.value,
+        content: newMessage,
         date: format(new Date, "dd 'de' MMM, 'às' HH:mm", {locale: pt}),
         author: {
           userId: user.id,
@@ -142,14 +141,14 @@ function Chat() {
               <TagLabel m='0.5rem'>{onlineUsers} online</TagLabel>
             </Tag>
           </Box>
-            <Button
-              onClick={() => exitAccount()}
-              leftIcon={<ArrowLeftIcon />} 
-              colorScheme='red' 
-              variant='solid'
-            >
-              Sair
-            </Button>
+          <Button
+            onClick={() => exitAccount()}
+            leftIcon={<ArrowLeftIcon />} 
+            colorScheme='red' 
+            variant='solid'
+          >
+            Sair
+          </Button>
         </Box>
 
         <Box
@@ -217,7 +216,7 @@ function Chat() {
               >
                 <Button
                   display={['none', 'none', 'flex', 'flex', 'flex']}
-                  onClick={() => handleSendMessage()}
+                  onClick={() => handleSendMessage(textArea.current.value)}
                   colorScheme='green'
                   alignItems='center'
                   justifyContent='center'

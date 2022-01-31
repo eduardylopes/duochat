@@ -10,14 +10,14 @@ export const AuthContext = createContext({});
 
 export function AuthContextProvider(props) {
   const toast = useToast()
-  const [onlineUsers, setOnlineUsers] = useState(0)
+  const [onlineUsers, setOnlineUsers] = useState(0);
   const [user, setUser] = useState();
-  const router = useRouter()
+  const router = useRouter();
 
   useEffect(() => {
     const unsubscribe = auth.onAuthStateChanged(user => {
       if (auth.currentUser) {
-        const { displayName, photoURL, uid } = user
+        const { displayName, photoURL, uid } = user;
   
         setUser({
           id: uid,
@@ -28,25 +28,25 @@ export function AuthContextProvider(props) {
     })
 
     return () => { unsubscribe() }
-  }, [])
+  }, []);
 
   useEffect(() => {
     const onlineUsersRef = ref(database, '/online-users')
     onValue(onlineUsersRef, onlineUserDatabase => {
-      setOnlineUsers(onlineUserDatabase.val())
+      setOnlineUsers(onlineUserDatabase.val());
     }, {
         onlyOnce: false
-    })
+    });
 
     return () => off(onlineUsersRef)
-  }, [auth.currentUser])
+  }, [auth.currentUser]);
   
   async function setUsersOnlineInDatabase(props) {
-    const onlineUsersRef = ref(database, '/online-users')
-    const databaseRef = ref(database)
-    const onlineUsersInDatabase = (await get(child(databaseRef, '/online-users'))).val()
+    const onlineUsersRef = ref(database, '/online-users');
+    const databaseRef = ref(database);
+    const onlineUsersInDatabase = (await get(child(databaseRef, '/online-users'))).val();
 
-    set(onlineUsersRef, onlineUsers + props)
+    set(onlineUsersRef, onlineUsers + props);
 
   }
 
@@ -54,11 +54,11 @@ export function AuthContextProvider(props) {
     try {
 
       if (auth.currentUser) {
-        const signOutPromisse = await signOut(auth)
-        setUsersOnlineInDatabase(Number(-1))
-        router.push('/')
+        const signOutPromisse = await signOut(auth);
+        setUsersOnlineInDatabase(Number(-1));
+        router.push('/');
       } else {
-        router.push('/')
+        router.push('/');
       }
 
     } catch (e) {
@@ -76,32 +76,32 @@ export function AuthContextProvider(props) {
   async function signIn(provider) {
 
     if(auth.currentUser) {
-      router.push('/chat')
+      router.push('/chat');
       return
     }
 
     try {
-      const result = await signInWithPopup(auth, provider)
+      const result = await signInWithPopup(auth, provider);
 
-      const { displayName, photoURL, uid } = result.user
+      const { displayName, photoURL, uid } = result.user;
 
       if ( displayName == undefined || photoURL == undefined || uid == undefined) {
         return
       }
 
       if (result.user) {
-        const { displayName, photoURL, uid } = result.user
+        const { displayName, photoURL, uid } = result.user;
   
         setUser({
           id: uid,
           name: displayName,
           avatar: photoURL
-        })
+        });
       }
 
-      setUsersOnlineInDatabase(Number(1))
+      setUsersOnlineInDatabase(Number(1));
 
-      router.push('/chat')
+      router.push('/chat');
 
       toast({
         title: 'Usuário conectado',
@@ -109,7 +109,7 @@ export function AuthContextProvider(props) {
         status: 'success',
         duration: 2000,
         isClosable: true,
-      })
+      });
 
     }
     catch (e) {
@@ -120,16 +120,16 @@ export function AuthContextProvider(props) {
         status: 'error',
         duration: 3000,
         isClosable: true,
-      })
+      });
     }
   }
 
   function signInWithGithub() {
-    signIn(githubProvider)
+    signIn(githubProvider);
   }
 
   function signInWithGoogle() {
-    signIn(googleProvider)
+    signIn(googleProvider);
   }
 
   return (

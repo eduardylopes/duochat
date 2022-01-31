@@ -8,16 +8,14 @@ import {
   Image,
   Input, 
   InputGroup, 
-  Button
+  Button,
 } from '@chakra-ui/react'
 import { BsFillEmojiSmileFill } from 'react-icons/bs'
-
 import { SearchIcon } from '@chakra-ui/icons'
 import { useState } from 'react'
 import { getGif } from '../services/giphy'
 
 export function GifPopup(props){
-
   const [isOpen, setIsOpen] = useState(false);
   const [gifs, setGifs] = useState([]);
   const [inputValue, setInputValue] = useState('');

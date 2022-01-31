@@ -1,6 +1,7 @@
 import axios from 'axios'
 
 export async function getGif(endpoint, gifName) {
+
   try {
     const response = await axios.get(`https://api.giphy.com/v1/gifs/${endpoint}`, {
       params: {
@@ -9,7 +10,6 @@ export async function getGif(endpoint, gifName) {
         q: {gifName}
       }
     });
-
     return response.data.data
 
   } catch (error) {

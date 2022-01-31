@@ -11,7 +11,6 @@ export function Message(props) {
   const toast = useToast();
   const messageRef = useRef();
   const { user } = useAuth();
-
   const isAuthor = props.author?.userId == user?.id;
 
   function handleDeleteMessage() {
@@ -72,7 +71,6 @@ export function Message(props) {
         onDelete={handleDeleteMessage}
         onCopy={handleCopyToClipboard}
         textRef={messageRef}
-        // onEdit={handleEditMessage}
       />
 
       <Avatar 

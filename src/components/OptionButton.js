@@ -56,11 +56,6 @@ export function OptionButton(props) {
             >
               Excluir
             </MenuItem>
-            <MenuItem 
-            _hover={{ background: '#255390' }}
-            >
-              Editar
-            </MenuItem>
             <MenuItem
               onClick={() => props.onCopy(props.textRef)}
               _hover={{ background: '#255390' }}
