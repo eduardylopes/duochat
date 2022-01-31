@@ -18,18 +18,18 @@ import { getGif } from '../services/giphy'
 
 export function GifPopup(props){
 
-  const [isOpen, setIsOpen] = useState(false)
+  const [isOpen, setIsOpen] = useState(false);
   const [gifs, setGifs] = useState([]);
-  const [inputValue, setInputValue] = useState('')
-  const close = () => setIsOpen(false)
-  const open = () => setIsOpen(!isOpen)
+  const [inputValue, setInputValue] = useState('');
+  const close = () => setIsOpen(false);
+  const open = () => setIsOpen(!isOpen);
   
   function handleGifList(endpoint, value='') {
 
     if (value.trim() == '') {
-      endpoint = 'trending'
+      endpoint = 'trending';
     }
-    getGif(endpoint, value).then(response => setGifs(response))
+    getGif(endpoint, value).then(response => setGifs(response));
   }
 
   return (

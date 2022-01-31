@@ -24,8 +24,8 @@ import { useAuth } from '../hooks/useAuth'
 import { useToast } from '@chakra-ui/react'
 
 function Chat() {
+
   const chatList = useRef()
-  const [newMessage, setNewMessage] = useState('')
   const [messages, setMessages] = useState([])
   const { user, exitAccount, onlineUsers } = useAuth();
   const toast = useToast();
@@ -36,7 +36,7 @@ function Chat() {
     const messageRef = ref(database, 'messages/')
     onValue(messageRef, message => {
 
-      const databaseMessage = message.val() || {}
+      const databaseMessage = message.val() || {};
       
       const parsedMessages = Object.entries(databaseMessage).map(([key, value]) => {
         return {
@@ -45,31 +45,32 @@ function Chat() {
           author: value.author,
           date: value.date
         }
-      })
+      });
+
       setMessages(parsedMessages.reverse())
     });
 
-  }, [])
+  }, []);
 
   useEffect(() => {
     if (chatList && chatList.current && chatList.current.firstChild) {
       chatList.current.scrollTo({
         behavior: "smooth",
-        top: chatList.current.firstChild.offsetTop + 100
+        top: chatList.current.firstChild.offsetTop
       });
     }
-
-  }, [messages, chatList])
+  }, [messages, chatList]);
 
   function sendMessageWithEnter(event) {
-    if(event.key == 'Enter') {
+    if(event.key === 'Enter') {
       event.preventDefault();
       handleSendMessage(event.target.value);
+      event.target.value = '';
     }
   }
 
-  async function handleSendMessage(newMessage) {
-      if (newMessage.trim() == '') {
+  async function handleSendMessage(handleNewMessage) {
+      if (handleNewMessage.trim() == '') {
         return;
       }
 
@@ -81,11 +82,11 @@ function Chat() {
           duration: 2000,
           isClosable: true,
         })
-        return
+        return;
       }
 
       const message = {
-        content: newMessage,
+        content: handleNewMessage,
         date: format(new Date, "dd 'de' MMM, 'às' HH:mm", {locale: pt}),
         author: {
           userId: user.id,
@@ -94,11 +95,9 @@ function Chat() {
         }
       }
 
-      const messageRef = ref(database, '/messages')
-      const messageId = await push(messageRef)
-      await set(messageId, message)
-
-      setNewMessage('')
+      const messageRef = ref(database, '/messages');
+      const messageId = await push(messageRef);
+      await set(messageId, message);
   }
 
   return (
@@ -193,14 +192,8 @@ function Chat() {
               spacing='1rem'
             >
               <Avatar name={user?.name} src={user?.avatar} size='lg'/>
-
               <Textarea
-                onKeyDown={event => {
-                  if(event.key === 'Enter') {
-                    event.preventDefault();
-                    handleSendMessage(event.target.value)
-                    event.target.value = ''
-                }}}
+                onKeyDown={event => sendMessageWithEnter(event)}
                 placeholder='Dexar um novo comentário'
                 resize='none'
                 h='100%'
@@ -208,7 +201,6 @@ function Chat() {
                 color='#FFF'
                 flex='1'
               />
-              
               <VStack
                 flexDirection='column'
                 justifyContent={['center', 'center', 'space-between', 'space-between']}

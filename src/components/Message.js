@@ -1,29 +1,29 @@
 import { ref, set } from 'firebase/database'
 import { database } from '../services/firebase';
-import { Text, Button } from '@chakra-ui/react'
+import { Text } from '@chakra-ui/react'
 import { Avatar, Image, Box, VStack, ListItem } from '@chakra-ui/react'
 import { useAuth } from '../hooks/useAuth';
 import { OptionButton } from './OptionButton'
-import { useState, useRef } from 'react'
+import { useRef } from 'react'
 import { useToast } from '@chakra-ui/react'
 
 export function Message(props) {
   const toast = useToast();
   const messageRef = useRef();
   const { user } = useAuth();
-  const isAuthor = props.author.userId === user?.id;
+
+  const isAuthor = props.author?.userId == user?.id;
 
   function handleDeleteMessage() {
     if(isAuthor) {
-      const messageDatabaseRef = ref(database, `/messages/${props.messageId}`)
-      set(messageDatabaseRef, null)
+      const messageDatabaseRef = ref(database, `/messages/${props.messageId}`);
+      set(messageDatabaseRef, null);
     }
   }
 
   async function handleCopyToClipboard(messageRef) {
-    const content = messageRef.current?.innerText 
+    const content = messageRef.current?.innerText ;
 
-    console.log(content)
     if (content == undefined) {
       toast({
         title: 'Não é possivel copiar imagens, o dev é preguiçoso',
@@ -32,11 +32,11 @@ export function Message(props) {
         duration: 2000,
         isClosable: true,
       })
-      return
+      return;
     }
 
     try {
-      await navigator.clipboard.writeText(content)
+      await navigator.clipboard.writeText(content);
       toast({
         title: 'Mensagem copiada!',
         position: 'top',
@@ -79,8 +79,8 @@ export function Message(props) {
         display={['none', 'flex', 'flex', 'flex' ]}
         size='lg'
         mr='1rem' 
-        name={props.author.name} 
-        src={props.author.avatar} 
+        name={props.author?.name} 
+        src={props.author?.avatar} 
       />
       <VStack
         display='flex'
@@ -100,7 +100,7 @@ export function Message(props) {
             color='#1cb0f6' 
             fontWeight='bold'
           >
-            {props.author.name}
+            {props.author?.name}
           </Text> 
           <Text 
             color='#FFF' 
@@ -112,12 +112,12 @@ export function Message(props) {
             {props.date}
             </Text>
         </Box>
-        { props.content.startsWith(':sticker:') ? 
+        { props.content?.startsWith(':sticker:') ? 
           (
             <Image
               w='100%'
               borderRadius='0.5rem'
-              src={props.content.replace(':sticker:', '')}
+              src={props.content?.replace(':sticker:', '')}
             />
           ) : (
             <Text 

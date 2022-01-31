@@ -74,6 +74,7 @@ export function AuthContextProvider(props) {
   }
 
   async function signIn(provider) {
+
     if(auth.currentUser) {
       router.push('/chat')
       return
@@ -81,6 +82,12 @@ export function AuthContextProvider(props) {
 
     try {
       const result = await signInWithPopup(auth, provider)
+
+      const { displayName, photoURL, uid } = result.user
+
+      if ( displayName == undefined || photoURL == undefined || uid == undefined) {
+        return
+      }
 
       if (result.user) {
         const { displayName, photoURL, uid } = result.user
