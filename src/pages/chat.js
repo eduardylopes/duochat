@@ -141,7 +141,9 @@ function Chat() {
                 colorScheme='green'
               >
                 <RiRadioButtonLine size='1rem'/>
-                <TagLabel m='0.5rem'>{usersData.length} online</TagLabel>
+                <TagLabel m='0.5rem'>
+                  {usersData.length} online
+                </TagLabel>
               </Tag>
             </Box>
             <AvatarGroup size='md' max={10}>
@@ -152,6 +154,7 @@ function Chat() {
                   size='sm'
                   name={userOnline.name}
                   ml='1rem'
+                  bg='none'
                 >
                   <AvatarBadge boxSize='1.25em' bg='green.500' />
                 </Avatar>
