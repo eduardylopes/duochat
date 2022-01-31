@@ -87,7 +87,7 @@ export function GifPopup(props){
           display='grid'
           flexDirection='row'
           gridTemplateColumns={['repeat(2, 1fr)','repeat(3, 1fr)', 'repeat(3, 1fr)', 'repeat(3, 1fr)']}
-          maxH='30vh'
+          h='30vh'
           gap='0.3rem'
           p='0'
           m='0.5rem'
