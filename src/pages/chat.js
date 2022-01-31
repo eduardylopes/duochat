@@ -26,13 +26,14 @@ import { useAuth } from '../hooks/useAuth'
 import { useToast } from '@chakra-ui/react'
 
 function Chat() {
+  const notificationSound = useRef();
   const textArea = useRef();
   const chatList = useRef();
   const [messages, setMessages] = useState([])
   const { user, exitAccount, usersData } = useAuth();
   const toast = useToast();
 
-  useBeforeunload(() => exitAccount())
+  // useBeforeunload(() => exitAccount())
 
   useEffect(() => {
     const messageRef = ref(database, 'messages/')
@@ -49,7 +50,13 @@ function Chat() {
         }
       });
 
-      setMessages(parsedMessages.reverse())
+      setMessages(parsedMessages.reverse());
+
+      if(notificationSound.current 
+        && chatList.current 
+        && !(user?.id == chatList.current.firstChild.dataset.userId)) {
+        notificationSound.current.play();
+      }
     });
 
   }, []);
@@ -115,6 +122,11 @@ function Chat() {
       bg='#235390'
       backgroundImage="url('/star-pattern.svg')"
     >
+      <audio
+        ref={notificationSound}
+        src='/notification.mp3'
+        >
+      </audio>
       <Box
         w={['100vw', '100vw', '768px', '768px']}
         h={['100vh', '100vh', '90vh', '90vh']}
@@ -198,6 +210,7 @@ function Chat() {
                   author={message.author}
                   content={message.content}
                   date={message.date}
+                  data={message.author.userId}
                 />
               ))
             }

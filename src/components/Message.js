@@ -57,6 +57,7 @@ export function Message(props) {
 
   return (
     <ListItem
+      data-user-id={props.author.userId}
       display='flex'
       flexDirection='row'
       width='max-content'
