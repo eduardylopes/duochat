@@ -1,7 +1,7 @@
 import { signInWithPopup, signOut } from "firebase/auth";
 import { createContext, useEffect, useState } from "react";
 import { auth, githubProvider, googleProvider } from "../services/firebase";
-import { set, ref, get, child, onValue, off, push } from 'firebase/database'
+import { set, ref, get, onValue, push } from 'firebase/database'
 import { useToast } from '@chakra-ui/react'
 import { database } from '../services/firebase'
 import { useRouter } from 'next/router'
@@ -10,7 +10,6 @@ export const AuthContext = createContext({});
 
 export function AuthContextProvider(props) {
   const toast = useToast()
-  // const [onlineUsers, setOnlineUsers] = useState(0);
   const [usersData, setUsersData] = useState([])
   const [userKey, setUserKey] = useState('');
   const [user, setUser] = useState();
@@ -113,9 +112,9 @@ export function AuthContextProvider(props) {
         });
       }
 
-      addStatusOnlineDatabase()
-
+      
       router.push('/chat');
+      addStatusOnlineDatabase()
 
       toast({
         title: 'Usuário conectado',

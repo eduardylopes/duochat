@@ -65,12 +65,14 @@ export function Message(props) {
       borderRadius='1rem'
       position='relative'
       ml={isAuthor ? 'auto' : '0'}
+      aria-label={`Mensagem de ${props.author?.name}`}
     >
       <OptionButton
         isAuthor={isAuthor}
         onDelete={handleDeleteMessage}
         onCopy={handleCopyToClipboard}
         textRef={messageRef}
+        aria-label='Botão de opções'
       />
 
       <Avatar 
@@ -106,6 +108,7 @@ export function Message(props) {
             ml='3rem' 
             display={['none', 'none', 'flex', 'flex']}
             fontSize='0.8rem'
+            aria-label='Data de envio da mensagem'
           >
             {props.date}
             </Text>
@@ -116,6 +119,7 @@ export function Message(props) {
               w='100%'
               borderRadius='0.5rem'
               src={props.content?.replace(':sticker:', '')}
+              alt='Gif animado'
             />
           ) : (
             <Text 
@@ -123,6 +127,7 @@ export function Message(props) {
               color='#fff'
               wordBreak='break-all'
               ref={messageRef}
+              aria-label='Conteúdo da mensagem'
             >
               {props.content}
             </Text>

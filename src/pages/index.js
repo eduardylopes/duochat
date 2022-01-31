@@ -32,7 +32,7 @@ export default function Home() {
           boxSize='300px'
           objectFit='cover'
           src='earth.svg'
-          alt='Dan Abramov'
+          alt='Planeta terra'
         />
         <Stack
           display='flex'
@@ -80,6 +80,7 @@ export default function Home() {
               colorScheme='gray'
               leftIcon={<FcGoogle />}
               fontSize={24}
+              aria-label='Entrar com uma conta Google'
             >
               Google
             </Button>
@@ -88,6 +89,7 @@ export default function Home() {
               colorScheme='gray' 
               leftIcon={<BsGithub />}
               fontSize={24}
+              aria-label='Entrar com uma conta Github'
             >
               Github
             </Button>

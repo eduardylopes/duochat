@@ -73,6 +73,7 @@ export function GifPopup(props){
           <Input 
             placeholder='Pesquise por um GIF'
             pl='2rem'
+            aria-label='Pesquise por um GIF'
             onKeyDown={event => {
               if(event.key == 'Enter') {
                 handleGifList('search', inputValue)

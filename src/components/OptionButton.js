@@ -36,6 +36,7 @@ export function OptionButton(props) {
         <Text
           fontSize='3rem'
           lineHeight='0'
+          aria-label='Botão opções'
         >
           ...
         </Text>
@@ -53,12 +54,14 @@ export function OptionButton(props) {
             <MenuItem 
             onClick={() => props.onDelete()}
             _hover={{ background: '#255390' }}
+            aria-label='Excluir'
             >
               Excluir
             </MenuItem>
             <MenuItem
               onClick={() => props.onCopy(props.textRef)}
               _hover={{ background: '#255390' }}
+              aria-label='Copiar'
             >
               Copiar
             </MenuItem>

@@ -163,6 +163,7 @@ function Chat() {
             leftIcon={<ArrowLeftIcon />} 
             colorScheme='red' 
             variant='solid'
+            aria-label='Sair'
           >
             Sair
           </Button>
@@ -214,6 +215,7 @@ function Chat() {
               <Avatar name={user?.name} src={user?.avatar} size='lg'/>
               <Textarea
                 onKeyDown={event => sendMessageWithEnter(event)}
+                aria-label='Escrever mensagem'
                 placeholder='Dexar um novo comentário'
                 resize='none'
                 h='100%'
@@ -243,6 +245,7 @@ function Chat() {
                   <ArrowRightIcon />
                 </Button>
                 <GifPopup
+                  aria-label='Enviar imagens GIF'
                   onStickerClick={(gifPicure) => {
                     handleSendMessage(`:sticker:${gifPicure}`);
                   }}
