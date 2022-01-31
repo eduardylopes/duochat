@@ -147,6 +147,7 @@ function Chat() {
             <AvatarGroup size='md' max={10}>
               { usersData.map(userOnline => (
                 <Avatar
+                  key={userOnline.id}
                   src={userOnline.avatar}
                   size='sm'
                   name={userOnline.name}

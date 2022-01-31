@@ -50,7 +50,7 @@ export function AuthContextProvider(props) {
         setUsersData(parsedUsers)
       })
     })
-  }, [])
+  }, [auth.currentUser])
   
   function addStatusOnlineDatabase() {
     const onlineUsersRef = ref(database, '/online-users');
