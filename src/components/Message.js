@@ -100,15 +100,16 @@ export function Message(props) {
           <Text 
             color='#1cb0f6' 
             fontWeight='bold'
+            fontSize='sm'
           >
             {props.author?.name}
           </Text> 
           <Text 
             color='#FFF' 
             fontStyle='italic'
+            fontSize='xs'
             ml='3rem' 
             display={['none', 'none', 'flex', 'flex']}
-            fontSize='0.8rem'
             aria-label='Data de envio da mensagem'
           >
             {props.date}
@@ -125,6 +126,7 @@ export function Message(props) {
           ) : (
             <Text 
               w='100%'
+              fontSize='md'
               color='#fff'
               wordBreak='break-all'
               ref={messageRef}
