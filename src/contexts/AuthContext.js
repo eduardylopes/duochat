@@ -1,7 +1,7 @@
 import { signInWithPopup, signOut } from "firebase/auth";
 import { createContext, useEffect, useState } from "react";
 import { auth, githubProvider, googleProvider } from "../services/firebase";
-import { set, ref, get, child, onValue, off } from 'firebase/database'
+import { set, ref, get, child, onValue, off, push } from 'firebase/database'
 import { useToast } from '@chakra-ui/react'
 import { database } from '../services/firebase'
 import { useRouter } from 'next/router'
@@ -11,6 +11,7 @@ export const AuthContext = createContext({});
 export function AuthContextProvider(props) {
   const toast = useToast()
   const [onlineUsers, setOnlineUsers] = useState(0);
+  const [userKey, setUserKey] = useState('');
   const [user, setUser] = useState();
   const router = useRouter();
 
@@ -29,25 +30,17 @@ export function AuthContextProvider(props) {
 
     return () => { unsubscribe() }
   }, []);
-
-  useEffect(() => {
-    const onlineUsersRef = ref(database, '/online-users')
-    onValue(onlineUsersRef, onlineUserDatabase => {
-      setOnlineUsers(onlineUserDatabase.val());
-    }, {
-        onlyOnce: false
-    });
-
-    return () => off(onlineUsersRef)
-  }, [auth.currentUser]);
   
-  async function setUsersOnlineInDatabase(props) {
+  function addStatusOnlineDatabase() {
     const onlineUsersRef = ref(database, '/online-users');
-    const databaseRef = ref(database);
-    const onlineUsersInDatabase = (await get(child(databaseRef, '/online-users'))).val();
 
-    set(onlineUsersRef, onlineUsers + props);
+    const onlineUserKey = push(onlineUsersRef, user).key
+    setUserKey(onlineUserKey)
+  }
 
+  function removeStatusOnlineDatabase() {
+    const onlineUsersRef = ref(database, `/online-users/${userKey}`)
+    set(onlineUsersRef, null)
   }
 
   async function exitAccount() {
@@ -55,7 +48,7 @@ export function AuthContextProvider(props) {
 
       if (auth.currentUser) {
         const signOutPromisse = await signOut(auth);
-        setUsersOnlineInDatabase(Number(-1));
+        removeStatusOnlineDatabase()
         router.push('/');
       } else {
         router.push('/');
@@ -99,7 +92,7 @@ export function AuthContextProvider(props) {
         });
       }
 
-      setUsersOnlineInDatabase(Number(1));
+      addStatusOnlineDatabase()
 
       router.push('/chat');
 

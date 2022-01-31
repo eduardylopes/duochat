@@ -1,4 +1,4 @@
-import { set, push, ref, onValue, off } from 'firebase/database'
+import { set, push, ref, onValue, get } from 'firebase/database'
 import { database, auth } from '../services/firebase'
 import { RiRadioButtonLine } from 'react-icons/ri'
 import { useEffect, useState, useRef } from 'react'
@@ -15,6 +15,8 @@ import {
   Textarea, 
   HStack,
   VStack,
+  AvatarGroup,
+  AvatarBadge
 } from '@chakra-ui/react'
 import { ArrowRightIcon, ArrowLeftIcon } from '@chakra-ui/icons'
 
@@ -27,10 +29,11 @@ function Chat() {
   const textArea = useRef();
   const chatList = useRef();
   const [messages, setMessages] = useState([])
+  const [usersData, setUsersData] = useState([])
   const { user, exitAccount, onlineUsers } = useAuth();
   const toast = useToast();
 
-  useBeforeunload(() => exitAccount())
+  // useBeforeunload(() => exitAccount())
 
   useEffect(() => {
     const messageRef = ref(database, 'messages/')
@@ -60,6 +63,26 @@ function Chat() {
       });
     }
   }, [messages, chatList]);
+
+  useEffect(() => {
+    const usersRef = ref(database, '/online-users');
+    onValue(usersRef, response => {
+      get(usersRef)
+      .then(result => {
+
+        const users = result.val() || {}
+        const parsedUsers = Object.entries(users).map(([key, value]) => {
+          return {
+            name: value.name,
+            avatar: value.avatar,
+            id: value.id,
+          }
+        })
+
+        setUsersData(parsedUsers)
+      })
+    })
+  }, [])
 
   function sendMessageWithEnter(event) {
     if(event.key === 'Enter') {
@@ -130,17 +153,31 @@ function Chat() {
           py='1rem'
           h='60px'
         >
-          <Box>
-            <Tag
-              size='lg' 
-              key='lg' 
-              variant='subtle'
-              colorScheme='green'
-            >
-              <RiRadioButtonLine size='1rem'/>
-              <TagLabel m='0.5rem'>{onlineUsers} online</TagLabel>
-            </Tag>
-          </Box>
+          <HStack>
+            <Box>
+              <Tag
+                size='lg' 
+                key='lg' 
+                variant='subtle'
+                colorScheme='green'
+              >
+                <RiRadioButtonLine size='1rem'/>
+                <TagLabel m='0.5rem'>{usersData.length} online</TagLabel>
+              </Tag>
+            </Box>
+            <AvatarGroup size='md' max={10}>
+              { usersData.map(userOnline => (
+                <Avatar
+                  src={userOnline.avatar}
+                  size='sm'
+                  name={userOnline.name}
+                  ml='1rem'
+                >
+                  <AvatarBadge boxSize='1.25em' bg='green.500' />
+                </Avatar>
+              ))}
+            </AvatarGroup>
+          </HStack>
           <Button
             onClick={() => exitAccount()}
             leftIcon={<ArrowLeftIcon />} 
