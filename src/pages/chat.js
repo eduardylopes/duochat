@@ -212,7 +212,6 @@ function Chat() {
                 py='1rem'
                 w='auto'
                 h='100%'
-                py='0'
               >
                 <Button
                   display={['none', 'none', 'flex', 'flex', 'flex']}
