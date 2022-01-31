@@ -9,10 +9,11 @@ import { useRouter } from 'next/router'
 export const AuthContext = createContext({});
 
 export function AuthContextProvider(props) {
-  const toast = useToast()
-  const [usersData, setUsersData] = useState([])
+  const toast = useToast();
+  const [usersData, setUsersData] = useState([]);
   const [userKey, setUserKey] = useState('');
   const [user, setUser] = useState();
+  const [isLogged, setIsLogged] = useState(false);
   const router = useRouter();
 
   useEffect(() => {
@@ -51,12 +52,14 @@ export function AuthContextProvider(props) {
     })
   }, [auth.currentUser])
   
-  function addStatusOnlineDatabase() {
-    const onlineUsersRef = ref(database, '/online-users');
-
-    const onlineUserKey = push(onlineUsersRef, user).key
-    setUserKey(onlineUserKey)
-  }
+  useEffect(() => {
+    if(auth.currentUser) {
+      const onlineUsersRef = ref(database, '/online-users');
+  
+      const onlineUserKey = push(onlineUsersRef, user).key
+      setUserKey(onlineUserKey)
+    }
+  }, [isLogged])
 
   function removeStatusOnlineDatabase() {
     const onlineUsersRef = ref(database, `/online-users/${userKey}`)
@@ -69,6 +72,7 @@ export function AuthContextProvider(props) {
       if (auth.currentUser) {
         const signOutPromisse = await signOut(auth);
         removeStatusOnlineDatabase()
+        setIsLogged(false)
         router.push('/');
       } else {
         router.push('/');
@@ -112,9 +116,9 @@ export function AuthContextProvider(props) {
         });
       }
 
+      setIsLogged(true)
       
       router.push('/chat');
-      addStatusOnlineDatabase()
 
       toast({
         title: 'Usuário conectado',
