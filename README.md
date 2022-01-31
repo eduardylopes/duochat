@@ -2,7 +2,7 @@
    <img src="https://user-images.githubusercontent.com/60992933/151864472-ebe431a4-4412-45eb-9d12-d3c45574c1b9.svg" alt="Imersão react" width="280"/>
 </p>
 
-<b>Duochat</b> é chat aberto, construído em NextJS, durante Imersão React da [Alura](https://github.com/alura). Desenvolvido para aqueles que queiram aprimorar a escrita e leitura em inglês.
+<b>Duochat</b> é um chat aberto, desenvolvido para aqueles que queiram aprimorar a escrita e leitura em inglês. Desenvolvido em NextJS, durante Imersão React da [Alura](https://github.com/alura). 
 
 ### Conteúdo
 
