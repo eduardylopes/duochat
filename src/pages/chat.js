@@ -1,4 +1,4 @@
-import { set, push, ref, onValue, get } from 'firebase/database'
+import { set, push, ref, onValue } from 'firebase/database'
 import { database, auth } from '../services/firebase'
 import { RiRadioButtonLine } from 'react-icons/ri'
 import { useEffect, useState, useRef } from 'react'
@@ -29,8 +29,7 @@ function Chat() {
   const textArea = useRef();
   const chatList = useRef();
   const [messages, setMessages] = useState([])
-  const [usersData, setUsersData] = useState([])
-  const { user, exitAccount, onlineUsers } = useAuth();
+  const { user, exitAccount, usersData } = useAuth();
   const toast = useToast();
 
   // useBeforeunload(() => exitAccount())
@@ -63,26 +62,6 @@ function Chat() {
       });
     }
   }, [messages, chatList]);
-
-  useEffect(() => {
-    const usersRef = ref(database, '/online-users');
-    onValue(usersRef, response => {
-      get(usersRef)
-      .then(result => {
-
-        const users = result.val() || {}
-        const parsedUsers = Object.entries(users).map(([key, value]) => {
-          return {
-            name: value.name,
-            avatar: value.avatar,
-            id: value.id,
-          }
-        })
-
-        setUsersData(parsedUsers)
-      })
-    })
-  }, [])
 
   function sendMessageWithEnter(event) {
     if(event.key === 'Enter') {

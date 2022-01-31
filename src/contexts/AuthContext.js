@@ -10,7 +10,8 @@ export const AuthContext = createContext({});
 
 export function AuthContextProvider(props) {
   const toast = useToast()
-  const [onlineUsers, setOnlineUsers] = useState(0);
+  // const [onlineUsers, setOnlineUsers] = useState(0);
+  const [usersData, setUsersData] = useState([])
   const [userKey, setUserKey] = useState('');
   const [user, setUser] = useState();
   const router = useRouter();
@@ -30,6 +31,26 @@ export function AuthContextProvider(props) {
 
     return () => { unsubscribe() }
   }, []);
+
+  useEffect(() => {
+    const usersRef = ref(database, '/online-users');
+    onValue(usersRef, response => {
+      get(usersRef)
+      .then(result => {
+
+        const users = result.val() || {}
+        const parsedUsers = Object.entries(users).map(([key, value]) => {
+          return {
+            name: value.name,
+            avatar: value.avatar,
+            id: value.id,
+          }
+        })
+
+        setUsersData(parsedUsers)
+      })
+    })
+  }, [])
   
   function addStatusOnlineDatabase() {
     const onlineUsersRef = ref(database, '/online-users');
@@ -133,7 +154,7 @@ export function AuthContextProvider(props) {
           signInWithGithub, 
           exitAccount, 
           database, 
-          onlineUsers,
+          usersData,
         }}
       >
         {props.children}

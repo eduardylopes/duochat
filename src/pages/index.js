@@ -6,7 +6,7 @@ import { RiRadioButtonLine } from 'react-icons/ri'
 import { Button, Box, Image, Text, Heading, SimpleGrid, Stack } from '@chakra-ui/react'
 
 export default function Home() {
-  const { signInWithGithub, signInWithGoogle, onlineUsers} = useAuth();
+  const { signInWithGithub, signInWithGoogle, usersData } = useAuth();
 
   return (
     <Stack
@@ -61,7 +61,7 @@ export default function Home() {
               fontWeight='800'
               ml='0.3rem'
             >
-              {onlineUsers} Online
+              {usersData.length} Online
             </Text>
           </Box>
           <SimpleGrid
