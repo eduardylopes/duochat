@@ -37,7 +37,6 @@ export function GifPopup(props){
       placement='left'
       onClose={close}
       isOpen={isOpen}
-      position='absolute'
     >
       <PopoverTrigger>
         <Button
@@ -50,7 +49,6 @@ export function GifPopup(props){
           borderRadius='1rem'
           px='0.5rem'
           color='white'
-          position='absolute'
           right='0'
           bottom='0'
         >

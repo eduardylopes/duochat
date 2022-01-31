@@ -24,8 +24,8 @@ import { useAuth } from '../hooks/useAuth'
 import { useToast } from '@chakra-ui/react'
 
 function Chat() {
-
-  const chatList = useRef()
+  const textArea = useRef();
+  const chatList = useRef();
   const [messages, setMessages] = useState([])
   const { user, exitAccount, onlineUsers } = useAuth();
   const toast = useToast();
@@ -43,7 +43,8 @@ function Chat() {
           messageId: key,
           content: value.content,
           author: value.author,
-          date: value.date
+          date: value.date,
+          edited: value.edited
         }
       });
 
@@ -69,8 +70,9 @@ function Chat() {
     }
   }
 
-  async function handleSendMessage(handleNewMessage) {
-      if (handleNewMessage.trim() == '') {
+  async function handleSendMessage() {
+
+      if (textArea.current.value.trim() == '') {
         return;
       }
 
@@ -86,7 +88,7 @@ function Chat() {
       }
 
       const message = {
-        content: handleNewMessage,
+        content: textArea.current.value,
         date: format(new Date, "dd 'de' MMM, 'às' HH:mm", {locale: pt}),
         author: {
           userId: user.id,
@@ -98,6 +100,8 @@ function Chat() {
       const messageRef = ref(database, '/messages');
       const messageId = await push(messageRef);
       await set(messageId, message);
+
+      textArea.current.value = ''
   }
 
   return (
@@ -200,14 +204,15 @@ function Chat() {
                 bg='#042c60'
                 color='#FFF'
                 flex='1'
+                ref={textArea}
               />
               <VStack
                 flexDirection='column'
+                alignItems='center'
                 justifyContent={['center', 'center', 'space-between', 'space-between']}
                 py='1rem'
                 w='auto'
                 h='100%'
-                position='relative'
                 py='0'
               >
                 <Button
