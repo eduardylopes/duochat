@@ -30,7 +30,7 @@ function Chat() {
   const { user, exitAccount, onlineUsers } = useAuth();
   const toast = useToast();
 
-  // useBeforeunload(() => exitAccount())
+  useBeforeunload(() => exitAccount())
 
   useEffect(() => {
     const messageRef = ref(database, 'messages/')
