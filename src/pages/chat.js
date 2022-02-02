@@ -53,8 +53,8 @@ function Chat() {
       setMessages(parsedMessages.reverse());
 
       if(notificationSound.current 
-        && chatList.current 
-        && !(user?.id == chatList.current.firstChild.dataset.userId)) {
+        && chatList?.current?.firstChild?.dataset
+        && !(user?.id == chatList?.current?.firstChild?.dataset?.userId)) {
         notificationSound.current.play();
       }
     });

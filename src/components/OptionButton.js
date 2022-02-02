@@ -18,7 +18,7 @@ export function OptionButton(props) {
         p='0'
         m='0'
         right='2rem'
-        bottom='0.3rem'
+        bottom='0rem'
         color='whiteAlpha.800'
         position='absolute'
         _hover={{
@@ -34,7 +34,7 @@ export function OptionButton(props) {
         }}
       >
         <Text
-          fontSize='3rem'
+          fontSize='2rem'
           lineHeight='0'
           aria-label='Botão opções'
         >
