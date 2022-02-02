@@ -62,10 +62,10 @@ function Chat() {
   }, []);
 
   useEffect(() => {
-    if (chatList && chatList.current && chatList.current.firstChild) {
+    if (chatList && chatList?.current && chatList.current.firstChild) {
       chatList.current.scrollTo({
         behavior: "smooth",
-        top: chatList.current.firstChild.offsetTop
+        top: 300
       });
     }
   }, [messages, chatList]);
@@ -246,13 +246,12 @@ function Chat() {
               <VStack
                 flexDirection='column'
                 alignItems='center'
-                justifyContent={['center', 'center', 'space-between', 'space-between']}
-                py='1rem'
+                justifyContent='space-between'
                 w='auto'
                 h='100%'
               >
                 <Button
-                  display={['none', 'none', 'flex', 'flex', 'flex']}
+                  // display={['none', 'none', 'flex', 'flex', 'flex']}
                   onClick={() => handleSendMessage(textArea.current.value)}
                   colorScheme='green'
                   alignItems='center'
